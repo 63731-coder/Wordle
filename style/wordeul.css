@@ -3,6 +3,7 @@ body {
     background-color: #4a5759;
     margin: 70px;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1em;
 }
 
 h1 {
@@ -10,6 +11,8 @@ h1 {
 }
 
 #game {
+    font-size: 1.4em;
+    font-weight: bold;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -17,7 +20,8 @@ h1 {
     border-radius: 10px;
     padding: 10px;
     box-sizing: border-box; 
-    max-width: 340px;
+    max-width: 300px;
+    max-height: 327px;
     margin: auto;
     user-select: none;  /* empêcher le joueur de sélectionner du texte dans la zone de jeu. */
 }
@@ -27,14 +31,15 @@ h1 {
 }
 
 .tile {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
+    width: 52px;
+    height: 52px;
+    margin: 2px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10%;
     background-color: #b0c4b1;
-    border: 1px solid #000;
+    border: 1px thin;
     font-family: Arial, sans-serif; /* Choisissez une police sans empattement */
 }
