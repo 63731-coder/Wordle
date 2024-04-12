@@ -43,3 +43,17 @@ h1 {
     border: 1px thin;
     font-family: Arial, sans-serif; /* Choisissez une police sans empattement */
 }
+
+
+/* les couleurs en fonction que la lettre soit correcte/presente/absente */
+.correct {
+    color:green;
+}
+
+.present {
+    color: yellow;
+}
+
+.absent {
+    color:red;
+}

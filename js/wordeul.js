@@ -22,12 +22,12 @@ function removeLetter(rowNumber, tileNumber, letter) {
 // setLetter(1, 4, 'U');     
 
 
-
 // variables globales
 let currentRowIndex = 0;
 let currentTileIndex = 0;
 const maxRow = 5;
 const maxTile = 5;
+let targetWord = "matin";
 
 
 
@@ -57,8 +57,37 @@ function keyUpHandler(event) {
             currentTileIndex = maxTile - 1;
             removeLetter(currentRowIndex, currentTileIndex); // Supprime la lettre actuelle
         }
+    } else if (keyCode === 13) { // si la touche est "Enter"
+        let word="";
+        for (let i = 0; i < maxTile; i++) {
+            const letter = gameEl.children[currentRowIndex].children[i].textContent;
+            word += letter;
+        }
+        console.log("Votre mot: "+word);
+        // Comparer chaque lettre du mot avec les lettres du mot cible
+        for (let i = 0; i < maxTile; i++) {
+            const letter = word[i];
+            const targetLetter = targetWord[i];
+            const tile = gameEl.children[currentRowIndex].children[i];
+
+            // Supprimer les classes existantes
+            tile.classList.remove("absent", "correct", "present");
+
+            // Ajouter la classe appropriée en fonction du résultat de la comparaison
+            if (letter === targetLetter) {
+                tile.classList.add("correct");
+                console.log("La lettre " + letter + " est correctement placée"); //test console
+            } else if (targetWord.includes(letter)) {
+                tile.classList.add("present");
+                console.log("La lettre " + letter + " est présente dans le mot cible"); //test console
+            } else {
+                tile.classList.add("absent");
+                console.log("La lettre " + letter + " n'est pas dans le mot cible"); // test console
+            }
+        }
     }
 }
+
 
 
 // Ajout d'un gestionnaire d’événement pour l’événement keyup. 
