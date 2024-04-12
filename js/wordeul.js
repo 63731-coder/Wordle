@@ -4,39 +4,71 @@ const gameEl = document.getElementById('game'); // l’élément du DOM dont l�
 console.log(gameEl) // verification 
 
 
-function setLetter(nombre_row, nombre_tile, letter) {
-    // modifie la lettre à position spécifiée
-
-    // trouver la ligne spécifiée (indices de 0 à 5)
-    const row = gameEl.children[nombre_row - 1]; 
-
-    // trouver la tuile spécifiée dans la ligne (indices de 0 à 5)
-    const tile = row.children[nombre_tile - 1]; 
-
-    // modifier le contenu de la tuile pour y mettre la lettre spécifiée
-    tile.textContent = letter;
+function setLetter(rowNumber, tileNumber, letter) {
+    /* fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée */
+    const row = gameEl.children[rowNumber]; // trouver la ligne spécifiée (indices de 0 à 4)
+    const tile = row.children[tileNumber]; // trouver la colonne spécifiée dans la ligne (indices de 0 à 4)
+    tile.textContent = letter;  // modifier le contenu de la tuile pour y mettre la lettre spécifiée
 }
 
-// setLetter(1, 4, 'U');      -->  test reussi dans la console
 
-
-
-
-function isAlphabetLetter(key) {
-    // verifier si letter c'est une lettre de l'aphabet
-    return /^[a-zA-Z]$/.test(key);
+function removeLetter(rowNumber, tileNumber, letter) {
+    /* fonction pour effacer les lettres */
+    const row = gameEl.children[rowNumber]; // trouver la ligne spécifiée (indices de 0 à 4)
+    const tile = row.children[tileNumber]; // trouver la colonne spécifiée dans la ligne (indices de 0 à 4)
+    tile.textContent = "X"; // modifier le contenu pour effacer la lettre 
 }
+
+// setLetter(1, 4, 'U');     
+
+
+
+// variables globales
+let currentRowIndex = 0;
+let currentTileIndex = 0;
+const maxRow = 5;
+const maxTile = 5;
+
+
 
 function keyUpHandler(event) {
-    // Récupérer la touche pressée
-    const key = event.key;
+    /* fonction pour les touches du clavier  */
+    const keyCode = event.keyCode;  // récuperer le code de la touche
+    const key = event.key;  // récuperer la touche 
 
-    // Vérifier si la touche est une lettre de l'alphabet
-    if (isAlphabetLetter(key)) {
-        // Insérer la touche pressée dans la grille en position (0, 0)
-        setLetter(1, 1, key);
+    if (keyCode >= 65 && keyCode <= 90) { // si la touche c'est une lettre, on la place dans le tableau
+        if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
+            setLetter(currentRowIndex, currentTileIndex, key);
+            currentTileIndex++;
+        } else {
+            currentRowIndex++;
+            currentTileIndex = 0;
+            if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
+                setLetter(currentRowIndex, currentTileIndex, key);
+                currentTileIndex++;
+            }
+        }
+    } else if (keyCode === 8) { // sinon si la touche est un "Backspace" on efface la lettre
+        if (currentTileIndex > 0) {     // verifier si la colonne n'est pas vide
+            currentTileIndex--;
+            removeLetter(currentRowIndex, currentTileIndex); // Supprime la lettre actuelle
+        } else if (currentRowIndex > 0) {   // verifier si la ligne n'est pas vide
+            currentRowIndex--;
+            currentTileIndex = maxTile - 1;
+            removeLetter(currentRowIndex, currentTileIndex); // Supprime la lettre actuelle
+        }
     }
 }
 
-// Ajouter un écouteur d'événement keyup à la fenêtre --> pas demandé dans l'enoncé
-gameEl.addEventListener('keyup', keyUpHandler);
+
+// Ajout d'un gestionnaire d’événement pour l’événement keyup. 
+document.addEventListener('keyup', keyUpHandler);
+
+
+
+
+
+// expliquations supplementaires prof: 
+
+// quand on clique sur Enter il doit verifier si c'est enter
+// quand on clique sur Backspace pour effacer on doit verifier si c'est backspace dans la console (le code qu'il envoies)
