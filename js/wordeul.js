@@ -1,13 +1,14 @@
 "use strict";   // activer le mode strict
-
 const gameEl = document.getElementById('game'); // l’élément du DOM dont l’identifiant est game.
+
 
 // variables globales
 let currentRowIndex = 0;
 let currentTileIndex = 0;
 const maxRow = 5;
 const maxTile = 5;
-const targetWord = "rebel";
+const targetWord = "REBEL";
+
 
 /**
  * Fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée.
@@ -18,8 +19,9 @@ const targetWord = "rebel";
 function setLetter(rowNumber, tileNumber, letter) {
     const row = gameEl.children[rowNumber]; // trouver la ligne spécifiée (indices de 0 à 4)
     const tile = row.children[tileNumber]; // trouver la colonne spécifiée dans la ligne (indices de 0 à 4)
-    tile.textContent = letter;  // modifier le contenu de la tuile pour y mettre la lettre spécifiée
+    tile.textContent = letter.toUpperCase();  // modifier le contenu de la tuile pour y mettre la lettre spécifiée
 }
+
 
 /**
  * Fonction pour effacer les lettres.
@@ -31,6 +33,7 @@ function removeLetter(rowNumber, tileNumber) {
     const tile = row.children[tileNumber]; // trouver la colonne spécifiée dans la ligne (indices de 0 à 4)
     tile.textContent = "X"; // modifier le contenu pour effacer la lettre 
 }
+
 
 /**
  * Gestionnaire de l'événement keyup.
@@ -61,23 +64,35 @@ function keyUpHandler(event) {
             removeLetter(currentRowIndex, currentTileIndex);
         }
     } else if (keyCode === 13) {
-        checkWord(currentRowIndex, currentTileIndex);
+        getWord(currentRowIndex);
     }
 }
 
-/**
- * Fonction pour valider le mot entré
- */
-function checkWord(currentRowIndex, currentTileIndex) {
-    let word = ""; // Le mot entré par l'utilisateur
-    let correctLetters = []; // Les lettres correctement placées
-    let misplacedLetters = []; // Les lettres mal placées
 
+/**
+ * Fonction qui recupère le mot entrée sur une ligne 
+ * @param {*} currentRowIndex - la ligne courrante 
+ */
+function getWord(currentRowIndex) {
+    let word = ""; // Le mot entré par l'utilisateur
     // Construction du mot entré par l'utilisateur
     for (let i = 0; i < maxTile; i++) {
         const letter = gameEl.children[currentRowIndex].children[i].textContent;
         word += letter;
     }
+    console.log("Votre mot: "+word);
+    colorLetter(word,currentRowIndex);
+}
+
+
+/**
+ * Fonction qui va colorier la lettre en fonction de sa position dans le mot
+ * @param {*} word - mot entée par l'utilisateur
+ * @param {*} currentRowIndex - la ligne currente
+ */
+function colorLetter(word, currentRowIndex) {
+    let correctLetters = []; // Les lettres correctement placées
+    let misplacedLetters = []; // Les lettres mal placées
 
     // Parcours du mot entré pour colorier chaque lettre selon les critères
     for (let i = 0; i < maxTile; i++) {
@@ -90,19 +105,18 @@ function checkWord(currentRowIndex, currentTileIndex) {
         if (letter === targetWord[i]) {
             tile.classList.add("correct");
             correctLetters += letter; // Ajout de la lettre aux lettres correctement placées
+            console.log(`La lettre ${letter} est bien placée !`)
         }
         // Vérification si la lettre est présente mais mal placée
         else if (targetWord.includes(letter) && targetWord.indexOf(letter) !== i && !misplacedLetters.includes(letter)) {
             tile.classList.add("present");
             misplacedLetters += letter; // Ajout de la lettre aux lettres mal placées
-        }
-        // Vérification si la lettre est présente et bien placée
-        else if (targetWord.includes(letter) && targetWord.indexOf(letter) === i) {
-            tile.classList.add("correct");
+            console.log(`La lettre ${letter} est presente dans le mot cible mais mal placée !`)
         }
         // La lettre est absente du mot cible
         else {
             tile.classList.add("absent");
+            console.log(`La lettre ${letter} n'est pas dans le mot cible !`)
         }
     }
 }
