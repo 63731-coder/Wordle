@@ -7,7 +7,7 @@ let currentRowIndex = 0;
 let currentTileIndex = 0;
 const maxRow = 5;
 const maxTile = 5;
-const targetWord = "matin";
+const targetWord = "rebel";
 
 /**
  * Fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée.
@@ -65,7 +65,9 @@ function keyUpHandler(event) {
     }
 }
 
-// Fonction pour valider le mot entré
+/**
+ * Fonction pour valider le mot entré
+ */
 function checkWord(currentRowIndex, currentTileIndex) {
     let word = ""; // Le mot entré par l'utilisateur
     let correctLetters = []; // Les lettres correctement placées
