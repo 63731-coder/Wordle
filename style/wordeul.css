@@ -1,8 +1,14 @@
+:root {
+    --modal-max-width: 500px; /* Largeur maximale de la modale */
+    --modal-min-height: 150px; /* Hauteur minimale de la modale */
+    --font: Arial, Helvetica, sans-serif;
+}
+
 body {
     color: white;
     background-color: #393E41;
     margin: 70px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font);
     font-size: 1.1em;
 }
 
@@ -45,7 +51,7 @@ h1 {
 }
 
 
-/* // Ajouter la couleur appropriée en fonction du résultat de la comparaison */
+/* Ajouter la couleur appropriée en fonction du résultat de la comparaison */
 .correct {
     background-color: #44BBA4;
 }
@@ -56,4 +62,75 @@ h1 {
 
 .absent {
     color:white;
+}
+
+/* Styles pour le fond grisé semi-transparent */
+.modal.win {
+    visibility: hidden; /* La modale est cachée par défaut */
+    position: fixed; /* Position fixe pour recouvrir toute la fenêtre */
+    top: 0; /* Aligner en haut */
+    left: 0; /* Aligner à gauche */
+    width: 100%; /* Prendre toute la largeur */
+    height: 100%; /* Prendre toute la hauteur */
+    background-color: rgba(0, 0, 0, 0.5); /* Fond grisé semi-transparent */
+}
+
+
+/* Styles pour le fond grisé semi-transparent */
+.modal.lose {
+    visibility: hidden; /* La modale est cachée par défaut */
+    position: fixed; /* Position fixe pour recouvrir toute la fenêtre */
+    top: 0; /* Aligner en haut */
+    left: 0; /* Aligner à gauche */
+    width: 100%; /* Prendre toute la largeur */
+    height: 100%; /* Prendre toute la hauteur */
+    background-color: rgba(0, 0, 0, 0.5); /* Fond grisé semi-transparent */
+}
+
+/* Styles pour la boîte modale */
+.modal-dialog {
+    font-family: var(--font);
+    position: fixed; /* Position fixe pour rester au centre */
+    top: 1.75rem; 
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    width: var(--modal-max-width); 
+    max-width: 100%; 
+    min-height: var(--modal-min-height); 
+    background-color: #44BBA4;
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Ombre pour l'effet de profondeur */
+}
+
+.modal-dialog.lose {
+    background-color: #EA526F;
+}
+
+/* Style pour l'en-tête et le pied de page de la modale */
+.modal-header, 
+.modal-footer {
+    padding: 10px; 
+    border-bottom: 1px solid #ccc; /* Ligne de séparation */
+    text-align: center; /* Centrer le texte */
+}
+
+
+/* Style pour le bouton de fermeture */
+.close-button {
+    position: absolute; /* Position absolue par rapport à son parent */
+    top: 10px;
+    right: 10px;
+    font-size: 2em; 
+    cursor: pointer;
+}
+
+/* Style pour le bouton de fermeture */
+.close {
+    color:white;
+    background-color: grey;
+    border-radius: 8px;
+    font-size: 1.1em;
 }

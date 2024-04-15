@@ -17,9 +17,9 @@ const targetWord = "REBEL";
  * @param {string} letter - La lettre à placer.
  */
 function setLetter(rowNumber, tileNumber, letter) {
-    const row = gameEl.children[rowNumber]; // trouver la ligne spécifiée (indices de 0 à 4)
-    const tile = row.children[tileNumber]; // trouver la colonne spécifiée dans la ligne (indices de 0 à 4)
-    tile.textContent = letter.toUpperCase();  // modifier le contenu de la tuile pour y mettre la lettre spécifiée
+    const row = gameEl.children[rowNumber]; // Trouver la ligne spécifiée 
+    const tile = row.children[tileNumber]; // Trouver la colonne spécifiée
+    tile.textContent = letter.toUpperCase();  // Ajouter la lettre
 }
 
 
@@ -29,9 +29,9 @@ function setLetter(rowNumber, tileNumber, letter) {
  * @param {number} tileNumber - Le numéro de la tuile dans la ligne.
  */
 function removeLetter(rowNumber, tileNumber) {
-    const row = gameEl.children[rowNumber]; // trouver la ligne spécifiée (indices de 0 à 4)
-    const tile = row.children[tileNumber]; // trouver la colonne spécifiée dans la ligne (indices de 0 à 4)
-    tile.textContent = "X"; // modifier le contenu pour effacer la lettre 
+    const row = gameEl.children[rowNumber]; // trouver la ligne spécifiée 
+    const tile = row.children[tileNumber]; // Trouver la colonne spécifiée 
+    tile.textContent = "X"; // Effacer la lettre 
 }
 
 
@@ -49,6 +49,7 @@ function keyUpHandler(event) {
         } else {
             currentRowIndex++;
             currentTileIndex = 0;
+            // je dois mettre ca pour mettre les lettres une apres l'autre
             if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
                 setLetter(currentRowIndex, currentTileIndex, key);
                 currentTileIndex++;
@@ -63,7 +64,7 @@ function keyUpHandler(event) {
             currentTileIndex = maxTile - 1;
             removeLetter(currentRowIndex, currentTileIndex);
         }
-    } else if (keyCode === 13) {
+    } else if (keyCode === 13 && currentTileIndex == maxTile) {
         getWord(currentRowIndex);
     }
 }
@@ -71,9 +72,10 @@ function keyUpHandler(event) {
 
 /**
  * Fonction qui recupère le mot entrée sur une ligne 
- * @param {*} currentRowIndex - la ligne courrante 
+ * @param {*} currentRowIndex - La ligne courante 
  */
 function getWord(currentRowIndex) {
+    let cmpt_words = 0; // compter combiens des mots sont entrées (max 5)
     let word = ""; // Le mot entré par l'utilisateur
     // Construction du mot entré par l'utilisateur
     for (let i = 0; i < maxTile; i++) {
@@ -81,14 +83,14 @@ function getWord(currentRowIndex) {
         word += letter;
     }
     console.log("Votre mot: "+word);
-    colorLetter(word,currentRowIndex);
+    colorLetter(word, currentRowIndex);
 }
 
 
 /**
  * Fonction qui va colorier la lettre en fonction de sa position dans le mot
- * @param {*} word - mot entée par l'utilisateur
- * @param {*} currentRowIndex - la ligne currente
+ * @param {*} word - Mot entrée par l'utilisateur
+ * @param {*} currentRowIndex - La ligne courante
  */
 function colorLetter(word, currentRowIndex) {
     let correctLetters = []; // Les lettres correctement placées
@@ -119,7 +121,35 @@ function colorLetter(word, currentRowIndex) {
             console.log(`La lettre ${letter} n'est pas dans le mot cible !`)
         }
     }
+    checkWin(word, currentRowIndex); // Aprés avoir colorié le mot, on vérifie si on a gagné
 }
+
+/**
+ * Fonction qui affiche les modales en fonction.
+ * @param {*} word - Le mot entré par l'utilisateur
+ * @param {*} currentRowIndex - La ligne courante
+ */
+function checkWin(word, currentRowIndex) {
+    if (word === targetWord) {
+        document.getElementById("win").style.visibility = 'visible';
+    } else if (currentRowIndex == 4) {
+        document.getElementById("target").textContent = targetWord; 
+        document.getElementById("lose").style.visibility = 'visible';
+    }
+}
+
+
+/**
+ * Lorsque on clique en dehors de la modale, la modale se ferme.
+ */
+function handleBackdropClick(event) {
+    if (event.target === event.currentTarget) { // Vérifie si l'événement (le click) provient du backdrop 
+        document.getElementById("win").style.visibility = 'hidden';
+        document.getElementById("lose").style.visibility = 'hidden';
+    }
+}
+document.querySelector("#win").addEventListener('click', handleBackdropClick);
+document.querySelector("#lose").addEventListener('click', handleBackdropClick);
 
 
 // Ajout d'un gestionnaire d’événement pour l’événement keyup. 
