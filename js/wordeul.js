@@ -1,5 +1,5 @@
 "use strict";   // activer le mode strict
-const gameEl = document.getElementById('game'); // l’élément du DOM dont l’identifiant est game.
+const gameEl = document.getElementById('game'); // l’élément du DOM 
 
 
 // variables globales
@@ -17,9 +17,9 @@ const targetWord = "REBEL";
  * @param {string} letter - La lettre à placer.
  */
 function setLetter(rowNumber, tileNumber, letter) {
-    const row = gameEl.children[rowNumber]; // Trouver la ligne spécifiée 
-    const tile = row.children[tileNumber]; // Trouver la colonne spécifiée
-    tile.textContent = letter.toUpperCase();  // Ajouter la lettre
+    const row = gameEl.children[rowNumber]; 
+    const tile = row.children[tileNumber]; 
+    tile.textContent = letter.toUpperCase();
 }
 
 
@@ -29,14 +29,14 @@ function setLetter(rowNumber, tileNumber, letter) {
  * @param {number} tileNumber - Le numéro de la tuile dans la ligne.
  */
 function removeLetter(rowNumber, tileNumber) {
-    const row = gameEl.children[rowNumber]; // trouver la ligne spécifiée 
-    const tile = row.children[tileNumber]; // Trouver la colonne spécifiée 
-    tile.textContent = "X"; // Effacer la lettre 
+    const row = gameEl.children[rowNumber]; 
+    const tile = row.children[tileNumber]; 
+    tile.textContent = ""; 
 }
 
 
-/**
- * Gestionnaire de l'événement keyup.
+/** Gestionnaire de l'événement keyup.
+ * @param {{keyCode: number, key: String}} event 
  */
 function keyUpHandler(event) {
     const keyCode = event.keyCode;
@@ -49,7 +49,7 @@ function keyUpHandler(event) {
         } else {
             currentRowIndex++;
             currentTileIndex = 0;
-            // je dois mettre ca pour mettre les lettres une apres l'autre
+            // je dois mettre ca pour mettre les lettres une apres l'autre sans pause
             if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
                 setLetter(currentRowIndex, currentTileIndex, key);
                 currentTileIndex++;
@@ -72,10 +72,10 @@ function keyUpHandler(event) {
 
 /**
  * Fonction qui recupère le mot entrée sur une ligne 
- * @param {*} currentRowIndex - La ligne courante 
+ * @param {number} currentRowIndex - La ligne courante 
  */
 function getWord(currentRowIndex) {
-    let cmpt_words = 0; // compter combiens des mots sont entrées (max 5)
+    //let cmpt_words = 0; // compter combiens des mots sont entrées (max 5)
     let word = ""; // Le mot entré par l'utilisateur
     // Construction du mot entré par l'utilisateur
     for (let i = 0; i < maxTile; i++) {
@@ -89,8 +89,8 @@ function getWord(currentRowIndex) {
 
 /**
  * Fonction qui va colorier la lettre en fonction de sa position dans le mot
- * @param {*} word - Mot entrée par l'utilisateur
- * @param {*} currentRowIndex - La ligne courante
+ * @param {String} word - Mot entrée par l'utilisateur
+ * @param {number} currentRowIndex - La ligne courante
  */
 function colorLetter(word, currentRowIndex) {
     let correctLetters = []; // Les lettres correctement placées
@@ -106,13 +106,13 @@ function colorLetter(word, currentRowIndex) {
         // Vérification si la lettre est correctement placée
         if (letter === targetWord[i]) {
             tile.classList.add("correct");
-            correctLetters += letter; // Ajout de la lettre aux lettres correctement placées
+            correctLetters.push(letter); // Ajout de la lettre aux lettres correctement placées
             console.log(`La lettre ${letter} est bien placée !`)
         }
         // Vérification si la lettre est présente mais mal placée
         else if (targetWord.includes(letter) && targetWord.indexOf(letter) !== i && !misplacedLetters.includes(letter)) {
             tile.classList.add("present");
-            misplacedLetters += letter; // Ajout de la lettre aux lettres mal placées
+            misplacedLetters.push(letter); // Ajout de la lettre aux lettres mal placées
             console.log(`La lettre ${letter} est presente dans le mot cible mais mal placée !`)
         }
         // La lettre est absente du mot cible
@@ -124,10 +124,11 @@ function colorLetter(word, currentRowIndex) {
     checkWin(word, currentRowIndex); // Aprés avoir colorié le mot, on vérifie si on a gagné
 }
 
+
 /**
- * Fonction qui affiche les modales en fonction.
- * @param {*} word - Le mot entré par l'utilisateur
- * @param {*} currentRowIndex - La ligne courante
+ * Fonction qui affiche les modales
+ * @param {String} word - Le mot entré par l'utilisateur
+ * @param {number} currentRowIndex - La ligne courante
  */
 function checkWin(word, currentRowIndex) {
     if (word === targetWord) {
@@ -150,6 +151,8 @@ function handleBackdropClick(event) {
 }
 document.querySelector("#win").addEventListener('click', handleBackdropClick);
 document.querySelector("#lose").addEventListener('click', handleBackdropClick);
+
+
 
 
 // Ajout d'un gestionnaire d’événement pour l’événement keyup. 
