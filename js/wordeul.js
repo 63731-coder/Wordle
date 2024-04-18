@@ -1,13 +1,12 @@
 "use strict";
 
 // variables globales
-const gameEl = document.getElementById('game'); 
+const gameEl = document.getElementById("game");
 let currentRowIndex = 0;
 let currentTileIndex = 0;
 const maxRow = 5;
 const maxTile = 5;
 const targetWord = "REBEL"; // iteration 1
-
 
 /**
  * Fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée.
@@ -16,11 +15,10 @@ const targetWord = "REBEL"; // iteration 1
  * @param {string} letter - La lettre à placer.
  */
 function setLetter(rowNumber, tileNumber, letter) {
-    const row = gameEl.children[rowNumber]; 
-    const tile = row.children[tileNumber]; 
+    const row = gameEl.children[rowNumber];
+    const tile = row.children[tileNumber];
     tile.textContent = letter.toUpperCase();
 }
-
 
 /**
  * Fonction pour effacer les lettres.
@@ -28,14 +26,13 @@ function setLetter(rowNumber, tileNumber, letter) {
  * @param {number} tileNumber - Le numéro de la tuile dans la ligne.
  */
 function removeLetter(rowNumber, tileNumber) {
-    const row = gameEl.children[rowNumber]; 
-    const tile = row.children[tileNumber]; 
-    tile.textContent = ""; 
+    const row = gameEl.children[rowNumber];
+    const tile = row.children[tileNumber];
+    tile.textContent = "";
 }
 
-
 /** Gestionnaire de l'événement keyup.
- * @param {{keyCode: number, key: String}} event 
+ * @param {{keyCode: number, key: String}} event
  */
 function keyUpHandler(event) {
     const keyCode = event.keyCode;
@@ -45,15 +42,14 @@ function keyUpHandler(event) {
         handleLetterKey(key);
     } else if (keyCode === 8) {
         handleBackspaceKey();
-    } else if (keyCode === 13 && currentTileIndex == maxTile) {
-        getWord(currentRowIndex);
+    } else if (keyCode === 13 && currentTileIndex === maxTile) {
+        getWord();
     }
 }
 
-
 /**
  * Fonction pour gerer la touches touches alphabethiques (A-Z)
- * @param {String} key 
+ * @param {String} key
  */
 function handleLetterKey(key) {
     if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
@@ -69,7 +65,6 @@ function handleLetterKey(key) {
     }
 }
 
-
 /**
  * Fonction pour gérer la touche Backspace pour effacer
  */
@@ -84,31 +79,27 @@ function handleBackspaceKey() {
     }
 }
 
-
 /**
- * Fonction qui recupère le mot entrée sur une ligne 
- * @param {number} currentRowIndex - La ligne courante 
+ * Fonction qui recupère le mot entrée sur une ligne
  */
-function getWord(currentRowIndex) {
+function getWord() {
     let word = "";
     // Construction du mot entré par l'utilisateur
     for (let i = 0; i < maxTile; i++) {
         const letter = gameEl.children[currentRowIndex].children[i].textContent;
         word += letter;
     }
-    console.log("Votre mot: "+word);
-    colorLetter(word, currentRowIndex);
+    console.log(`Votre mot: ${word}`);
+    colorLetter(word);
 }
-
 
 /**
  * Fonction qui va colorier la lettre en fonction de sa position dans le mot
  * @param {String} word - Mot entrée par l'utilisateur
- * @param {number} currentRowIndex - La ligne courante
  */
-function colorLetter(word, currentRowIndex) {
-    let correctLetters = []; 
-    let misplacedLetters = []; 
+function colorLetter(word) {
+    const correctLetters = [];
+    const misplacedLetters = [];
 
     // Parcours du mot entré pour colorier chaque lettre selon les critères
     for (let i = 0; i < maxTile; i++) {
@@ -118,71 +109,56 @@ function colorLetter(word, currentRowIndex) {
         tile.classList.remove("absent", "correct", "present");
 
         // Vérification si la lettre est correctement placée
-        if (letter === targetWord[i]) { 
+        if (letter === targetWord[i]) {
             tile.classList.add("correct");
             correctLetters.push(letter); // Ajout de la lettre aux lettres correctement placées
-            console.log(`La lettre ${letter} est bien placée !`)
-        }
-        // Vérification si la lettre est présente mais mal placée
-        else if (targetWord.includes(letter) && targetWord.indexOf(letter) !== i && !misplacedLetters.includes(letter)) {
+            console.log(`La lettre ${letter} est bien placée !`);
+        } else if (targetWord.includes(letter) && targetWord.indexOf(letter) !== i && !misplacedLetters.includes(letter)) {
             tile.classList.add("present");
-            misplacedLetters.push(letter); 
-            console.log(`La lettre ${letter} est presente dans le mot cible mais mal placée !`)
-        }
-        // La lettre est absente
-        else {
+            misplacedLetters.push(letter);
+            console.log(`La lettre ${letter} est presente dans le mot cible mais mal placée !`);
+        } else {
             tile.classList.add("absent");
-            console.log(`La lettre ${letter} n'est pas dans le mot cible !`)
+            console.log(`La lettre ${letter} n'est pas dans le mot cible !`);
         }
     }
-    checkWin(word, currentRowIndex); // Aprés avoir colorié le mot, on vérifie si on a gagné
+    checkWin(word); // Aprés avoir colorié le mot, on vérifie si on a gagné
 }
-
 
 /**
  * Fonction qui affiche les modales
  * @param {String} word - Le mot entré par l'utilisateur
- * @param {number} currentRowIndex - La ligne courante
  */
-function checkWin(word, currentRowIndex) {
+function checkWin(word) {
     if (word === targetWord) {
-        document.getElementById("win").style.visibility = 'visible';
-    } else if (currentRowIndex == 4) {
-        document.getElementById("target").textContent = targetWord; 
-        document.getElementById("lose").style.visibility = 'visible';
+        document.getElementById("win").style.visibility = "visible";
+    } else if (currentRowIndex === 4) {
+        document.getElementById("target").textContent = targetWord;
+        document.getElementById("lose").style.visibility = "visible";
     }
 }
-
 
 /**
  * Lorsqu'on clique en dehors de la modale, la modale se ferme.
- * @param {Event} event 
+ * @param {Event} event
  */
 function handleBackdropClick(event) {
-    if (event.target === event.currentTarget) { // Vérifie si l'événement (le click) provient du backdrop 
-        document.getElementById("win").style.visibility = 'hidden';
-        document.getElementById("lose").style.visibility = 'hidden';
+    if (event.target === event.currentTarget) { // Vérifie si l'événement (le click) provient du backdrop
+        document.getElementById("win").style.visibility = "hidden";
+        document.getElementById("lose").style.visibility = "hidden";
     }
 }
 
-
-// Ajout d'un gestionnaire d’événement pour l’événement keyup. 
-document.querySelector("#win").addEventListener('click', handleBackdropClick);
-document.querySelector("#lose").addEventListener('click', handleBackdropClick);
-document.addEventListener('keyup', keyUpHandler);
-
-
-
-
+// Ajout d'un gestionnaire d’événement pour l’événement keyup.
+document.querySelector("#win").addEventListener("click", handleBackdropClick);
+document.querySelector("#lose").addEventListener("click", handleBackdropClick);
+document.addEventListener("keyup", keyUpHandler);
 
 /*
-faire un dictionnaire 
+faire un dictionnaire
 R= 1
 E= 2
 B= 1
 L= 1
-verifier a chaque fois si le mot est dans le dictionnaire 
-
-en plus:
-    - 
+verifier a chaque fois si le mot est dans le dictionnaire
 */
