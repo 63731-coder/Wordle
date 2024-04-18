@@ -1,13 +1,12 @@
-"use strict";   // activer le mode strict
-const gameEl = document.getElementById('game'); // l’élément du DOM 
-
+"use strict";
 
 // variables globales
+const gameEl = document.getElementById('game'); 
 let currentRowIndex = 0;
 let currentTileIndex = 0;
 const maxRow = 5;
 const maxTile = 5;
-const targetWord = "REBEL";
+const targetWord = "REBEL"; // iteration 1
 
 
 /**
@@ -43,29 +42,45 @@ function keyUpHandler(event) {
     const key = event.key;
 
     if (keyCode >= 65 && keyCode <= 90) {
+        handleLetterKey(key);
+    } else if (keyCode === 8) {
+        handleBackspaceKey();
+    } else if (keyCode === 13 && currentTileIndex == maxTile) {
+        getWord(currentRowIndex);
+    }
+}
+
+
+/**
+ * Fonction pour gerer la touches touches alphabethiques (A-Z)
+ * @param {String} key 
+ */
+function handleLetterKey(key) {
+    if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
+        setLetter(currentRowIndex, currentTileIndex, key);
+        currentTileIndex++;
+    } else {
+        currentRowIndex++;
+        currentTileIndex = 0;
         if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
             setLetter(currentRowIndex, currentTileIndex, key);
             currentTileIndex++;
-        } else {
-            currentRowIndex++;
-            currentTileIndex = 0;
-            // je dois mettre ca pour mettre les lettres une apres l'autre sans pause
-            if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
-                setLetter(currentRowIndex, currentTileIndex, key);
-                currentTileIndex++;
-            }
         }
-    } else if (keyCode === 8) {
-        if (currentTileIndex > 0) {
-            currentTileIndex--;
-            removeLetter(currentRowIndex, currentTileIndex);
-        } else if (currentRowIndex > 0) {
-            currentRowIndex--;
-            currentTileIndex = maxTile - 1;
-            removeLetter(currentRowIndex, currentTileIndex);
-        }
-    } else if (keyCode === 13 && currentTileIndex == maxTile) {
-        getWord(currentRowIndex);
+    }
+}
+
+
+/**
+ * Fonction pour gérer la touche Backspace pour effacer
+ */
+function handleBackspaceKey() {
+    if (currentTileIndex > 0) {
+        currentTileIndex--;
+        removeLetter(currentRowIndex, currentTileIndex);
+    } else if (currentRowIndex > 0) {
+        currentRowIndex--;
+        currentTileIndex = maxTile - 1;
+        removeLetter(currentRowIndex, currentTileIndex);
     }
 }
 
@@ -75,8 +90,7 @@ function keyUpHandler(event) {
  * @param {number} currentRowIndex - La ligne courante 
  */
 function getWord(currentRowIndex) {
-    //let cmpt_words = 0; // compter combiens des mots sont entrées (max 5)
-    let word = ""; // Le mot entré par l'utilisateur
+    let word = "";
     // Construction du mot entré par l'utilisateur
     for (let i = 0; i < maxTile; i++) {
         const letter = gameEl.children[currentRowIndex].children[i].textContent;
@@ -93,8 +107,8 @@ function getWord(currentRowIndex) {
  * @param {number} currentRowIndex - La ligne courante
  */
 function colorLetter(word, currentRowIndex) {
-    let correctLetters = []; // Les lettres correctement placées
-    let misplacedLetters = []; // Les lettres mal placées
+    let correctLetters = []; 
+    let misplacedLetters = []; 
 
     // Parcours du mot entré pour colorier chaque lettre selon les critères
     for (let i = 0; i < maxTile; i++) {
@@ -104,7 +118,7 @@ function colorLetter(word, currentRowIndex) {
         tile.classList.remove("absent", "correct", "present");
 
         // Vérification si la lettre est correctement placée
-        if (letter === targetWord[i]) {
+        if (letter === targetWord[i]) { 
             tile.classList.add("correct");
             correctLetters.push(letter); // Ajout de la lettre aux lettres correctement placées
             console.log(`La lettre ${letter} est bien placée !`)
@@ -112,10 +126,10 @@ function colorLetter(word, currentRowIndex) {
         // Vérification si la lettre est présente mais mal placée
         else if (targetWord.includes(letter) && targetWord.indexOf(letter) !== i && !misplacedLetters.includes(letter)) {
             tile.classList.add("present");
-            misplacedLetters.push(letter); // Ajout de la lettre aux lettres mal placées
+            misplacedLetters.push(letter); 
             console.log(`La lettre ${letter} est presente dans le mot cible mais mal placée !`)
         }
-        // La lettre est absente du mot cible
+        // La lettre est absente
         else {
             tile.classList.add("absent");
             console.log(`La lettre ${letter} n'est pas dans le mot cible !`)
@@ -141,7 +155,8 @@ function checkWin(word, currentRowIndex) {
 
 
 /**
- * Lorsque on clique en dehors de la modale, la modale se ferme.
+ * Lorsqu'on clique en dehors de la modale, la modale se ferme.
+ * @param {Event} event 
  */
 function handleBackdropClick(event) {
     if (event.target === event.currentTarget) { // Vérifie si l'événement (le click) provient du backdrop 
@@ -149,11 +164,25 @@ function handleBackdropClick(event) {
         document.getElementById("lose").style.visibility = 'hidden';
     }
 }
-document.querySelector("#win").addEventListener('click', handleBackdropClick);
-document.querySelector("#lose").addEventListener('click', handleBackdropClick);
-
-
 
 
 // Ajout d'un gestionnaire d’événement pour l’événement keyup. 
+document.querySelector("#win").addEventListener('click', handleBackdropClick);
+document.querySelector("#lose").addEventListener('click', handleBackdropClick);
 document.addEventListener('keyup', keyUpHandler);
+
+
+
+
+
+/*
+faire un dictionnaire 
+R= 1
+E= 2
+B= 1
+L= 1
+verifier a chaque fois si le mot est dans le dictionnaire 
+
+en plus:
+    - 
+*/
