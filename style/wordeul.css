@@ -7,7 +7,7 @@ body {
     background-color: #393E41;
     margin: 70px;
     font-family: var(--font);
-    font-size: 1.1em;
+    font-size: 1em;
 }
 
 h1 {
@@ -15,6 +15,7 @@ h1 {
 }
 
 #game {
+    visibility: hidden;
     font-size: 1.4em;
     font-weight: bold;
     display: flex;
@@ -125,4 +126,11 @@ h1 {
     background-color: grey;
     border-radius: 8px;
     font-size: 1.1em;
+}
+
+#goBtn {
+    color:white;
+    background-color: #23b5d3;
+    border-radius: 8px;
+    font-size:2em;
 }

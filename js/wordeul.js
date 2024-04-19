@@ -26,6 +26,11 @@ function createGrid() {
     adjustBorder();
 }
 
+function initGame() {
+    gameEl.style.visibility = "visible";
+    createGrid();
+}
+
 /**
  * Fonction pour ajouster la taille de la bordure en fonction de la grille de jeu
  */
@@ -166,7 +171,7 @@ function checkWin(word) {
     if (word === targetWord) {
         document.getElementById("win").style.visibility = "visible";
         endGame();
-    } else if (currentRowIndex === (maxRow - 1)) {
+    } else if (currentRowIndex === maxRow - 1) {
         document.getElementById("target").textContent = targetWord;
         document.getElementById("lose").style.visibility = "visible";
         endGame();
@@ -192,8 +197,8 @@ function endGame() {
     document.removeEventListener("keyup", keyUpHandler); // desactiver les touches clavier
 }
 
-// génerer la grille
-createGrid();
+const goButton = document.getElementById("goBtn");
+goButton.addEventListener("click", initGame);
 
 // Ajout d'un gestionnaire d’événement pour l’événement keyup.
 document.querySelector("#win").addEventListener("click", handleBackdropClick);
