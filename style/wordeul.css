@@ -1,6 +1,4 @@
 :root {
-    --modal-max-width: 500px; /* Largeur maximale de la modale */
-    --modal-min-height: 150px; /* Hauteur minimale de la modale */
     --font: Arial, Helvetica, sans-serif;
 }
 
@@ -25,11 +23,8 @@ h1 {
     border: 2px solid #fff;
     border-radius: 10px;
     padding: 10px;
-    box-sizing: border-box; 
-    max-width: 300px;
-    max-height: 327px;
+    box-sizing:content-box;
     margin: auto;
-    user-select: none;  /* empêcher le joueur de sélectionner du texte dans la zone de jeu. */
 }
 
 .row {
@@ -39,17 +34,16 @@ h1 {
 .tile {
     width: 52px;
     height: 52px;
-    margin: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
+    margin-right: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10%;
     background-color: #A19B91;
     border: 1px thin;
-    font-family: Arial, sans-serif; /* Choisissir une police sans empattement */
+    font-family: Arial, sans-serif;
 }
-
 
 /* Ajouter la couleur appropriée en fonction du résultat de la comparaison */
 .correct {
@@ -66,43 +60,42 @@ h1 {
 
 /* Styles pour le fond grisé semi-transparent */
 .modal.win {
-    visibility: hidden; /* La modale est cachée par défaut */
-    position: fixed; /* Position fixe pour recouvrir toute la fenêtre */
-    top: 0; /* Aligner en haut */
-    left: 0; /* Aligner à gauche */
-    width: 100%; /* Prendre toute la largeur */
-    height: 100%; /* Prendre toute la hauteur */
-    background-color: rgba(0, 0, 0, 0.5); /* Fond grisé semi-transparent */
+    visibility: hidden;
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
-
 
 /* Styles pour le fond grisé semi-transparent */
 .modal.lose {
-    visibility: hidden; /* La modale est cachée par défaut */
-    position: fixed; /* Position fixe pour recouvrir toute la fenêtre */
-    top: 0; /* Aligner en haut */
-    left: 0; /* Aligner à gauche */
-    width: 100%; /* Prendre toute la largeur */
-    height: 100%; /* Prendre toute la hauteur */
-    background-color: rgba(0, 0, 0, 0.5); /* Fond grisé semi-transparent */
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Styles pour la boîte modale */
 .modal-dialog {
     font-family: var(--font);
-    position: fixed; /* Position fixe pour rester au centre */
+    position: fixed;
     top: 1.75rem; 
     left: 0; 
     right: 0; 
     margin-left: auto; 
     margin-right: auto; 
-    width: var(--modal-max-width); 
+    width:500px; 
     max-width: 100%; 
-    min-height: var(--modal-min-height); 
+    min-height:150px; 
     background-color: #44BBA4;
     padding: 20px; 
     border-radius: 8px; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Ombre pour l'effet de profondeur */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .modal-dialog.lose {
@@ -113,14 +106,13 @@ h1 {
 .modal-header, 
 .modal-footer {
     padding: 10px; 
-    border-bottom: 1px solid #ccc; /* Ligne de séparation */
-    text-align: center; /* Centrer le texte */
+    border-bottom: 1px solid #ccc;
+    text-align: center;
 }
-
 
 /* Style pour le bouton de fermeture */
 .close-button {
-    position: absolute; /* Position absolue par rapport à son parent */
+    position: absolute;
     top: 10px;
     right: 10px;
     font-size: 2em; 

@@ -4,9 +4,39 @@
 const gameEl = document.getElementById("game");
 let currentRowIndex = 0;
 let currentTileIndex = 0;
-const maxRow = 5;
-const maxTile = 5;
 const targetWord = "REBEL"; // iteration 1
+let gameEnded = false; // variable pour suivre si le jeu est terminé
+const maxTile = targetWord.length;
+const maxRow = 5; // nb de tentatives
+
+/**
+ * Fonction pour créer la grille
+ */
+function createGrid() {
+    for (let i = 0; i < maxRow; i++) {
+        const row = document.createElement("div");
+        row.classList.add("row");
+        for (let j = 0; j < maxTile; j++) {
+            const tile = document.createElement("div");
+            tile.classList.add("tile");
+            row.appendChild(tile);
+        }
+        gameEl.appendChild(row);
+    }
+    adjustBorder();
+}
+
+/**
+ * Fonction pour ajouster la taille de la bordure en fonction de la grille de jeu
+ */
+function adjustBorder() {
+    const borderWidth = 52;
+    const borderHeight = 52;
+    const totalWidth = maxTile * borderWidth + 3 * (maxTile - 1);
+    const totalHeight = maxRow * borderHeight + 5 * (maxRow - 1);
+    gameEl.style.width = `${totalWidth}px`;
+    gameEl.style.height = `${totalHeight}px`;
+}
 
 /**
  * Fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée.
@@ -66,9 +96,12 @@ function handleLetterKey(key) {
 }
 
 /**
- * Fonction pour gérer la touche Backspace pour effacer
+ * Fonction pour gérer la touche Backspace
  */
 function handleBackspaceKey() {
+    if (currentTileIndex === maxTile && currentRowIndex < maxRow) {
+        return;
+    }
     if (currentTileIndex > 0) {
         currentTileIndex--;
         removeLetter(currentRowIndex, currentTileIndex);
@@ -132,9 +165,11 @@ function colorLetter(word) {
 function checkWin(word) {
     if (word === targetWord) {
         document.getElementById("win").style.visibility = "visible";
-    } else if (currentRowIndex === 4) {
+        endGame();
+    } else if (currentRowIndex === (maxRow - 1)) {
         document.getElementById("target").textContent = targetWord;
         document.getElementById("lose").style.visibility = "visible";
+        endGame();
     }
 }
 
@@ -149,6 +184,17 @@ function handleBackdropClick(event) {
     }
 }
 
+/**
+ * Fonction pour gérer le jeu lorsque le mot cible est deviné.
+ */
+function endGame() {
+    gameEnded = true;
+    document.removeEventListener("keyup", keyUpHandler); // desactiver les touches clavier
+}
+
+// génerer la grille
+createGrid();
+
 // Ajout d'un gestionnaire d’événement pour l’événement keyup.
 document.querySelector("#win").addEventListener("click", handleBackdropClick);
 document.querySelector("#lose").addEventListener("click", handleBackdropClick);
@@ -161,4 +207,5 @@ E= 2
 B= 1
 L= 1
 verifier a chaque fois si le mot est dans le dictionnaire
+arreter d'ecrire une fois que le jeu se termine
 */
