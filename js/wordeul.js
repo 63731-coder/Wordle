@@ -4,11 +4,14 @@
 const gameEl = document.getElementById("game");
 let currentRowIndex = 0;
 let currentTileIndex = 0;
-let targetWord; //initialiser targetWord - le mettre a jour avec la valeur reécuperé dans le formulaire
+let targetWord = "REBEL"; // le mot est mis a jour avec la valeur reécuperé dans le formulaire
 let gameEnded = false; // variable pour suivre si le jeu est terminé
 let maxTile = 1;
 let maxRow = 1; // nb de tentatives
 
+/**
+ * Fonction pour cacher la configuration du jeu et afficher la grille
+ */
 function initGame() {
     gameEl.style.visibility = "visible";
     document.getElementById("rules").style.display = "none";
@@ -45,6 +48,7 @@ function adjustBorder() {
     gameEl.style.height = `${totalHeight}px`;
 }
 
+// Gestinonaire de l'evenement du button Go
 document.getElementById("config").addEventListener("submit", (e) => {
     e.preventDefault();
     // @ts-ignore
@@ -57,6 +61,7 @@ document.getElementById("config").addEventListener("submit", (e) => {
         throw Error("Unexpected");
     } else {
         initGame();
+        document.querySelector(".add").classList.add("add-right");
     }
 });
 

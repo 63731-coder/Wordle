@@ -1,17 +1,43 @@
 :root {
     --font: Arial, Helvetica, sans-serif;
 }
-
+main {
+    display: grid;
+    grid-template-areas: 
+        "add title addRight"
+        "add content addRight";
+    grid-template-rows: 100px auto;
+    grid-template-columns: 330px auto 330px;
+}
 body {
     color: white;
     background-color: #393E41;
-    margin: 70px;
+    /*margin-left: 350px;
+    margin-right: 350px;*/
     font-family: var(--font);
     font-size: 1em;
+    background-image: url(https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZudzJzdm9veG9idGs5dTIwODh1MXgza3gxeGdhd2M5OHh3emM3diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VwXcgwGIPyiiY/giphy.gif);
+    
+}
+
+section#rules {
+    grid-area: content;
+}
+aside {
+    grid-area: add;
+}
+img {
+    width: 300px;
+}
+.add-right {
+    grid-area: addRight;
+    margin-left: 20px
 }
 
 h1 {
     text-align: center;
+    grid-area: title;
+    margin-top: 70px;
 }
 
 #game {
@@ -26,6 +52,8 @@ h1 {
     padding: 10px;
     box-sizing:content-box;
     margin: auto;
+    margin-top: 20px;
+    grid-area: content;
 }
 
 .row {
@@ -180,6 +208,3 @@ h1 {
     background-color: transparent;
     width:270px;
 }
-
-
-  
