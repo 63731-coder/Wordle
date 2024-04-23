@@ -20,11 +20,25 @@ body {
     
 }
 
+@keyframes horizontal-shaking {
+    0% { transform: translateX(0) }
+    25% { transform: translateX(5px) }
+    50% { transform: translateX(-5px) }
+    75% { transform: translateX(5px) }
+    100% { transform: translateX(0) }
+}
+    
+.shake {
+    animation-name: horizontal-shaking;
+    animation-duration: 0.5s;
+}
+
 section#rules {
     grid-area: content;
 }
 aside {
     grid-area: add;
+    margin-top: 50px;
 }
 img {
     width: 300px;

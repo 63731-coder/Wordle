@@ -8,6 +8,11 @@ let targetWord = "REBEL"; // le mot est mis a jour avec la valeur reécuperé da
 let gameEnded = false; // variable pour suivre si le jeu est terminé
 let maxTile = 1;
 let maxRow = 1; // nb de tentatives
+const dict2 = [
+    "MANGER",
+    "VISERA",
+    "ROULER",
+];
 
 /**
  * Fonction pour cacher la configuration du jeu et afficher la grille
@@ -57,6 +62,16 @@ document.getElementById("config").addEventListener("submit", (e) => {
     console.log(targetWord);
     maxRow = Number(formData.get("tentatives"));
     console.log(maxRow);
+
+    if (!dict2.includes(targetWord)) { // verifier si le mot est dans le dictionnaire
+        console.log(`Mot non trouvé dans le dictionnaire: ${targetWord}`);
+        document.getElementById("rules").classList.add("shake"); // animer le jeu
+        document.getElementById("rules").addEventListener("animationend", () => {
+            document.getElementById("rules").classList.remove("shake");
+        });
+        return;
+    }
+
     if (!(e.target instanceof HTMLFormElement)) {
         throw Error("Unexpected");
     } else {
