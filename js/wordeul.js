@@ -62,7 +62,7 @@ document.getElementById("config").addEventListener("submit", (e) => {
     }
 
     if (!dict.includes(targetWord)) { // verifier si le mot est dans le dictionnaire
-        console.log(`Mot non trouvé dans le dictionnaire: ${targetWord}`);
+        console.log(`targetWord non trouvé dans le dictionnaire: ${targetWord}`);
         document.getElementById("rules").classList.add("shake"); // animer le jeu
         document.getElementById("rules").addEventListener("animationend", () => {
             document.getElementById("rules").classList.remove("shake");
@@ -146,9 +146,6 @@ function handleLetterKey(key) {
  * Fonction pour gérer la touche Backspace
  */
 function handleBackspaceKey() {
-    if (currentTileIndex === maxTile && currentRowIndex < maxRow) {
-        return;
-    }
     if (currentTileIndex > 0) {
         currentTileIndex--;
         removeLetter(currentRowIndex, currentTileIndex);
@@ -170,7 +167,15 @@ function getWord() {
         word += letter;
     }
     console.log(`Votre mot: ${word}`);
-    colorLetter(word);
+    if (!dict.includes(word)) { // verifier si le mot est dans le dictionnaire
+        console.log(`Mot non trouvé dans le dictionnaire: ${word}`);
+        gameEl.classList.add("shake"); // animer le jeu
+        gameEl.addEventListener("animationend", () => {
+            gameEl.classList.remove("shake");
+        });
+    } else {
+        colorLetter(word);
+    }
 }
 
 /**
