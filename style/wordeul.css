@@ -12,8 +12,6 @@ main {
 body {
     color: white;
     background-color: #393E41;
-    /*margin-left: 350px;
-    margin-right: 350px;*/
     font-family: var(--font);
     font-size: 1em;
     background-image: url(https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZudzJzdm9veG9idGs5dTIwODh1MXgza3gxeGdhd2M5OHh3emM3diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VwXcgwGIPyiiY/giphy.gif);

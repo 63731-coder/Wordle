@@ -4,15 +4,10 @@
 const gameEl = document.getElementById("game");
 let currentRowIndex = 0;
 let currentTileIndex = 0;
-let targetWord = "REBEL"; // le mot est mis a jour avec la valeur reécuperé dans le formulaire
-let gameEnded = false; // variable pour suivre si le jeu est terminé
-let maxTile = 1;
-let maxRow = 1; // nb de tentatives
-const dict2 = [
-    "MANGER",
-    "VISERA",
-    "ROULER",
-];
+let targetWord; // le mot est mis a jour avec la valeur reécuperé dans le formulaire
+let gameEnded = false;
+let maxTile = 1; // mis à jour
+let maxRow = 1; // nb de tentatives - mis à jour avec la valeur du formulaire
 
 /**
  * Fonction pour cacher la configuration du jeu et afficher la grille
@@ -56,14 +51,17 @@ function adjustBorder() {
 // Gestinonaire de l'evenement du button Go
 document.getElementById("config").addEventListener("submit", (e) => {
     e.preventDefault();
-    // @ts-ignore
     const formData = new FormData(e.target);
     targetWord = String(formData.get("mot")).toUpperCase();
     console.log(targetWord);
     maxRow = Number(formData.get("tentatives"));
     console.log(maxRow);
 
-    if (!dict2.includes(targetWord)) { // verifier si le mot est dans le dictionnaire
+    if (!dict) {
+        throw Error("Dictionnaire non chargé.");
+    }
+
+    if (!dict.includes(targetWord)) { // verifier si le mot est dans le dictionnaire
         console.log(`Mot non trouvé dans le dictionnaire: ${targetWord}`);
         document.getElementById("rules").classList.add("shake"); // animer le jeu
         document.getElementById("rules").addEventListener("animationend", () => {
