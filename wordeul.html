@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordeul</title>
     <link rel="stylesheet" href="style/wordeul.css">
+    <script src="dict.js"></script>
     <script src="js/wordeul.js" defer></script>
 </head>
 <body>
     <h1>Wordeul</h1>
+    <section id="rules">
     <h3>But du jeu</h3>
     <p>Déterminez un mot de cinq lettres.</p>
     <p>Le joueur donne un mot et confirme avec Enter. Si le mot se trouve au dictionnaire, l'ordinateur
@@ -20,7 +22,20 @@
         <li>les autres sont absentes.</li>
     </ul>
 
-    <button id="goBtn">Go</button>
+    <h3>Configuration du jeu</h3>
+    <form id="config">
+        <div class="mot-container">
+            <label for="mot">Mot à deviner:</label><br>
+            <input type="password" id="mot" name="mot"> <!-- Assurez-vous que l'attribut name est correct -->
+        </div><br>
+        <div class="tentatives-container">
+            <label for="tentatives">Nombre de tentatives:</label><br>
+            <input type="number" id="tentatives" name="tentatives"> <!-- Assurez-vous que l'attribut name est correct -->
+        </div><br>
+        <button type="submit" id="goBtn">Go</button>
+    </form>
+    </section>
+    
     
     <section id="game"></section>
 

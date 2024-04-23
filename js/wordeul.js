@@ -4,15 +4,22 @@
 const gameEl = document.getElementById("game");
 let currentRowIndex = 0;
 let currentTileIndex = 0;
-const targetWord = "REBEL"; // iteration 1
+let targetWord; //initialiser targetWord - le mettre a jour avec la valeur reécuperé dans le formulaire
 let gameEnded = false; // variable pour suivre si le jeu est terminé
-const maxTile = targetWord.length;
-const maxRow = 5; // nb de tentatives
+let maxTile = 1;
+let maxRow = 1; // nb de tentatives
+
+function initGame() {
+    gameEl.style.visibility = "visible";
+    document.getElementById("rules").style.display = "none";
+    createGrid();
+}
 
 /**
  * Fonction pour créer la grille
  */
 function createGrid() {
+    maxTile = targetWord.length;
     for (let i = 0; i < maxRow; i++) {
         const row = document.createElement("div");
         row.classList.add("row");
@@ -26,11 +33,6 @@ function createGrid() {
     adjustBorder();
 }
 
-function initGame() {
-    gameEl.style.visibility = "visible";
-    createGrid();
-}
-
 /**
  * Fonction pour ajouster la taille de la bordure en fonction de la grille de jeu
  */
@@ -42,6 +44,21 @@ function adjustBorder() {
     gameEl.style.width = `${totalWidth}px`;
     gameEl.style.height = `${totalHeight}px`;
 }
+
+document.getElementById("config").addEventListener("submit", (e) => {
+    e.preventDefault();
+    // @ts-ignore
+    const formData = new FormData(e.target);
+    targetWord = String(formData.get("mot")).toUpperCase();
+    console.log(targetWord);
+    maxRow = Number(formData.get("tentatives"));
+    console.log(maxRow);
+    if (!(e.target instanceof HTMLFormElement)) {
+        throw Error("Unexpected");
+    } else {
+        initGame();
+    }
+});
 
 /**
  * Fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée.
@@ -197,20 +214,7 @@ function endGame() {
     document.removeEventListener("keyup", keyUpHandler); // desactiver les touches clavier
 }
 
-const goButton = document.getElementById("goBtn");
-goButton.addEventListener("click", initGame);
-
 // Ajout d'un gestionnaire d’événement pour l’événement keyup.
 document.querySelector("#win").addEventListener("click", handleBackdropClick);
 document.querySelector("#lose").addEventListener("click", handleBackdropClick);
 document.addEventListener("keyup", keyUpHandler);
-
-/*
-faire un dictionnaire
-R= 1
-E= 2
-B= 1
-L= 1
-verifier a chaque fois si le mot est dans le dictionnaire
-arreter d'ecrire une fois que le jeu se termine
-*/

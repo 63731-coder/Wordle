@@ -134,3 +134,52 @@ h1 {
     border-radius: 8px;
     font-size:2em;
 }
+
+.mot-container {
+    background-color: white;
+    width:300px;
+    border-radius: 5px;
+}
+  
+.mot-container label {
+    position: absolute;
+    color: grey;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+  
+.mot-container input {
+    padding-top: 20px;
+    margin-bottom: 10px;
+    margin-left:10px;
+    border: none;
+    background-color: transparent;
+    width: 270px;
+}
+
+.tentatives-container {
+    background-color: white;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.tentatives-container label {
+    position:absolute;
+    color:grey;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top:10px;
+}
+
+.tentatives-container input {
+    padding-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border: none;
+    background-color: transparent;
+    width:270px;
+}
+
+
+  
