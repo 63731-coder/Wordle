@@ -34,13 +34,16 @@ body {
 section#rules {
     grid-area: content;
 }
+
 aside {
     grid-area: add;
     margin-top: 50px;
 }
+
 img {
     width: 300px;
 }
+
 .add-right {
     grid-area: addRight;
     margin-left: 20px
@@ -81,7 +84,7 @@ h1 {
     justify-content: center;
     align-items: center;
     border-radius: 10%;
-    background-color: #A19B91;
+    background-color: rgba(170, 158, 158, 0.3);
     border: 1px thin;
     font-family: Arial, sans-serif;
 }
@@ -97,6 +100,7 @@ h1 {
 
 .absent {
     color:white;
+    background-color: #A19B91;
 }
 
 /* Styles pour le fond grisé semi-transparent */
@@ -172,7 +176,14 @@ h1 {
     color:white;
     background-color: #23b5d3;
     border-radius: 8px;
-    font-size:2em;
+    font-size:1.3em;
+}
+
+#randomWordBtn {
+    color:white;
+    background-color: #2a9d8f;
+    border-radius: 8px;
+    font-size:1.3em;
 }
 
 .mot-container {

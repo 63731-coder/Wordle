@@ -70,6 +70,13 @@ document.getElementById("config").addEventListener("submit", (e) => {
         return;
     }
 
+    if (targetWord === "") { // si on a appuié sur le button Random
+        const randomIndex = Math.floor(Math.random() * dict.length); // Générer un index aléatoire
+        targetWord = dict[randomIndex]; // Retourner le mot correspondant à l'index aléatoire
+        console.log(targetWord);
+        maxRow = 5;
+    }
+
     if (!(e.target instanceof HTMLFormElement)) {
         throw Error("Unexpected");
     } else {
