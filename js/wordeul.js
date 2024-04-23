@@ -8,6 +8,7 @@ let targetWord; // le mot est mis a jour avec la valeur reécuperé dans le form
 let gameEnded = false;
 let maxTile = 1; // mis à jour
 let maxRow = 1; // nb de tentatives - mis à jour avec la valeur du formulaire
+let wordValidated = false;
 
 /**
  * Fonction pour cacher la configuration du jeu et afficher la grille
@@ -47,43 +48,6 @@ function adjustBorder() {
     gameEl.style.width = `${totalWidth}px`;
     gameEl.style.height = `${totalHeight}px`;
 }
-
-// Gestinonaire de l'evenement du button Go
-document.getElementById("config").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    targetWord = String(formData.get("mot")).toUpperCase();
-    console.log(targetWord);
-    maxRow = Number(formData.get("tentatives"));
-    console.log(maxRow);
-
-    if (!dict) {
-        throw Error("Dictionnaire non chargé.");
-    }
-
-    if (!dict.includes(targetWord)) { // verifier si le mot est dans le dictionnaire
-        console.log(`targetWord non trouvé dans le dictionnaire: ${targetWord}`);
-        document.getElementById("rules").classList.add("shake"); // animer le jeu
-        document.getElementById("rules").addEventListener("animationend", () => {
-            document.getElementById("rules").classList.remove("shake");
-        });
-        return;
-    }
-
-    if (targetWord === "") { // si on a appuié sur le button Random
-        const randomIndex = Math.floor(Math.random() * dict.length); // Générer un index aléatoire
-        targetWord = dict[randomIndex]; // Retourner le mot correspondant à l'index aléatoire
-        console.log(targetWord);
-        maxRow = 5;
-    }
-
-    if (!(e.target instanceof HTMLFormElement)) {
-        throw Error("Unexpected");
-    } else {
-        initGame();
-        document.querySelector(".add").classList.add("add-right");
-    }
-});
 
 /**
  * Fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée.
@@ -132,13 +96,12 @@ function handleLetterKey(key) {
     if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
         setLetter(currentRowIndex, currentTileIndex, key);
         currentTileIndex++;
-    } else {
+    } else if (currentRowIndex < maxRow && wordValidated) {
         currentRowIndex++;
         currentTileIndex = 0;
-        if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
-            setLetter(currentRowIndex, currentTileIndex, key);
-            currentTileIndex++;
-        }
+        setLetter(currentRowIndex, currentTileIndex, key);
+        currentTileIndex++;
+        wordValidated = false;
     }
 }
 
@@ -146,10 +109,14 @@ function handleLetterKey(key) {
  * Fonction pour gérer la touche Backspace
  */
 function handleBackspaceKey() {
+    if (wordValidated) { // Vérifier si on a appuié sur enter et le mot été valide
+        return;
+    }
+    wordValidated = false;
     if (currentTileIndex > 0) {
         currentTileIndex--;
         removeLetter(currentRowIndex, currentTileIndex);
-    } else if (currentRowIndex > 0) {
+    } else if (currentRowIndex > 0 && currentTileIndex > 1) {
         currentRowIndex--;
         currentTileIndex = maxTile - 1;
         removeLetter(currentRowIndex, currentTileIndex);
@@ -168,12 +135,14 @@ function getWord() {
     }
     console.log(`Votre mot: ${word}`);
     if (!dict.includes(word)) { // verifier si le mot est dans le dictionnaire
+        wordValidated = false;
         console.log(`Mot non trouvé dans le dictionnaire: ${word}`);
         gameEl.classList.add("shake"); // animer le jeu
         gameEl.addEventListener("animationend", () => {
             gameEl.classList.remove("shake");
         });
     } else {
+        wordValidated = true;
         colorLetter(word);
     }
 }
@@ -244,7 +213,44 @@ function endGame() {
     document.removeEventListener("keyup", keyUpHandler); // desactiver les touches clavier
 }
 
-// Ajout d'un gestionnaire d’événement pour l’événement keyup.
+// Gestinonaire de l'evenement du button Go
+document.getElementById("config").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    targetWord = String(formData.get("mot")).toUpperCase();
+    console.log(targetWord);
+    maxRow = Number(formData.get("tentatives"));
+    console.log(maxRow);
+
+    if (!dict) {
+        throw Error("Dictionnaire non chargé.");
+    }
+
+    if (!dict.includes(targetWord)) { // verifier si le mot est dans le dictionnaire
+        console.log(`targetWord non trouvé dans le dictionnaire: ${targetWord}`);
+        document.getElementById("rules").classList.add("shake"); // animer le jeu
+        document.getElementById("rules").addEventListener("animationend", () => {
+            document.getElementById("rules").classList.remove("shake");
+        });
+        return;
+    }
+
+    if (targetWord === "") { // si on a appuié sur le button Random
+        const randomIndex = Math.floor(Math.random() * dict.length); // Générer un index aléatoire
+        targetWord = dict[randomIndex]; // Retourner le mot correspondant à l'index aléatoire
+        console.log(targetWord);
+        maxRow = 5;
+    }
+
+    if (!(e.target instanceof HTMLFormElement)) {
+        throw Error("Unexpected");
+    } else {
+        initGame();
+        document.querySelector(".add").classList.add("add-right");
+    }
+});
+
+// Ajout d'un gestionnaire d’événement
 document.querySelector("#win").addEventListener("click", handleBackdropClick);
 document.querySelector("#lose").addEventListener("click", handleBackdropClick);
 document.addEventListener("keyup", keyUpHandler);
