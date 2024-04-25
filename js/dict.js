@@ -1,5 +1,9 @@
-// eslint-disable-next-line
-let dict;
+"use strict";
+
+/**
+ * @type {String[]}
+ */
+let dict = [];
 
 /**
  * @param {number} length entre 6 et 10

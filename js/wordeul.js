@@ -2,28 +2,39 @@
 
 // variables globales
 const gameEl = document.getElementById("game");
+const keyB = document.getElementById("keyboard");
 let currentRowIndex = 0;
 let currentTileIndex = 0;
-let targetWord; // le mot est mis a jour avec la valeur reécuperé dans le formulaire
 let gameEnded = false;
-let maxTile = 1; // mis à jour
-let maxRow = 1; // nb de tentatives - mis à jour avec la valeur du formulaire
 let wordValidated = false;
+let kybEvent = undefined;
+
+const keyboard = [
+    ["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M"],
+    ["Enter", "W", "X", "C", "V", "B", "N", "Backspace"],
+];
+
+// todo: changer les .style et mettre des classes.
 
 /**
  * Fonction pour cacher la configuration du jeu et afficher la grille
+ * @param {String} targetWord
+ * @param {number} maxRow - Nombre de tentatives
  */
-function initGame() {
+function initGame(targetWord, maxRow) {
     gameEl.style.visibility = "visible";
     document.getElementById("rules").style.display = "none";
-    createGrid();
+    createGrid(targetWord, maxRow);
 }
 
 /**
  * Fonction pour créer la grille
+ * @param {String} targetWord
+ * @param {number} maxRow - Nombre de tentatives
  */
-function createGrid() {
-    maxTile = targetWord.length;
+function createGrid(targetWord, maxRow) {
+    const maxTile = targetWord.length;
     for (let i = 0; i < maxRow; i++) {
         const row = document.createElement("div");
         row.classList.add("row");
@@ -34,19 +45,70 @@ function createGrid() {
         }
         gameEl.appendChild(row);
     }
-    adjustBorder();
+    adjustBorder(maxRow, maxTile);
 }
 
 /**
  * Fonction pour ajouster la taille de la bordure en fonction de la grille de jeu
+ * @param {number} maxRow - Nombre de tentatives
+ * @param {number} maxTile - Nombre de colonnes
  */
-function adjustBorder() {
+function adjustBorder(maxRow, maxTile) {
     const borderWidth = 52;
     const borderHeight = 52;
     const totalWidth = maxTile * borderWidth + 3 * (maxTile - 1);
     const totalHeight = maxRow * borderHeight + 5 * (maxRow - 1);
     gameEl.style.width = `${totalWidth}px`;
     gameEl.style.height = `${totalHeight}px`;
+}
+
+/**
+ * Fonction qui génere le clavier virtuel
+ */
+function generateVirtualKeyboard() {
+    keyB.classList.add("virtual-keyboard");
+
+    for (let i = 0; i < keyboard.length; i++) {
+        const keyRow = keyboard[i];
+        const rowElement = document.createElement("div");
+        rowElement.classList.add("keyboard-row");
+
+        for (let j = 0; j < keyRow.length; j++) {
+            const key = keyRow[j];
+            const keyElement = document.createElement("button");
+            keyElement.textContent = key;
+            keyElement.classList.add("keyboard-key");
+            if (key === "Enter" || key === "Backspace") {
+                keyElement.classList.add("special-key");
+            }
+            rowElement.appendChild(keyElement);
+        }
+        keyB.appendChild(rowElement);
+    }
+}
+generateVirtualKeyboard();
+
+/**
+ * Fonction qui ajoute un gestionnaire d'événements click pour chaque touche du clavier
+ * @param {number} maxRow - Nombre de lignes
+ * @param {number} maxTile - Nombre de colonnes
+ * @param {string} targetWord - Mot cible
+ */
+function addKeyboardEventListeners(maxRow, maxTile, targetWord) {
+    const keys = document.querySelectorAll(".keyboard-key");
+    keys.forEach((key) => {
+        key.addEventListener("click", () => {
+            document.dispatchEvent(new KeyboardEvent("keyup", {"key": key.textContent}));
+            // const keyTest = key.textContent; // Récupérer le texte de la touche
+            // const event = {key: keyTest}; // Créer un objet avec la propriété 'key'
+            // keyUpHandler(maxRow, maxTile, targetWord); // Passer l'objet event à keyUpHandlerµ
+        });
+    });
+}
+
+function isAlphabet(key) {
+    // Vérifie si la touche est une lettre majuscule (A-Z) ou minuscule (a-z)
+    return /^[A-Za-z]$/.test(key);
 }
 
 /**
@@ -72,27 +134,32 @@ function removeLetter(rowNumber, tileNumber) {
     tile.textContent = "";
 }
 
-/** Gestionnaire de l'événement keyup.
- * @param {{keyCode: number, key: String}} event
- */
-function keyUpHandler(event) {
-    const keyCode = event.keyCode;
-    const key = event.key;
-
-    if (keyCode >= 65 && keyCode <= 90) {
-        handleLetterKey(key);
-    } else if (keyCode === 8) {
-        handleBackspaceKey();
-    } else if (keyCode === 13 && currentTileIndex === maxTile) {
-        getWord();
-    }
+/**
+ * Gestionnaire de l'événement keyup.
+ * @param {number} maxRow - Nombre de colonnes
+ * @param {number} maxTile - Nombre de colonnes
+ * @param {String} targetWord - Nombre de colonnes
+*/
+function keyUpHandler(maxRow, maxTile, targetWord) {
+    return (/** @type {{ key: string; }} */ e) => {
+        const key = e.key;
+        if (isAlphabet(key)) {
+            handleLetterKey(key, maxRow, maxTile);
+        } else if (key === "Backspace") {
+            handleBackspaceKey(maxTile);
+        } else if (key === "Enter" && currentTileIndex === maxTile) {
+            getWord(targetWord, maxTile, maxRow);
+        }
+    };
 }
 
 /**
  * Fonction pour gerer la touches touches alphabethiques (A-Z)
  * @param {String} key
+ * @param {number} maxRow - Nombre de tentatives
+ * @param {number} maxTile - Nombre de colonnes
  */
-function handleLetterKey(key) {
+function handleLetterKey(key, maxRow, maxTile) {
     if (currentRowIndex < maxRow && currentTileIndex < maxTile) {
         setLetter(currentRowIndex, currentTileIndex, key);
         currentTileIndex++;
@@ -107,8 +174,9 @@ function handleLetterKey(key) {
 
 /**
  * Fonction pour gérer la touche Backspace
+ * @param {number} maxTile - Nombre de colonnes
  */
-function handleBackspaceKey() {
+function handleBackspaceKey(maxTile) {
     if (wordValidated) { // Vérifier si on a appuié sur enter et le mot été valide
         return;
     }
@@ -125,8 +193,11 @@ function handleBackspaceKey() {
 
 /**
  * Fonction qui recupère le mot entrée sur une ligne
+ * @param {String} targetWord - Nombre de tentatives
+ * @param {number} maxRow - Nombre de lignes
+ * @param {number} maxTile - Nombre de colonnes
  */
-function getWord() {
+function getWord(targetWord, maxTile, maxRow) {
     let word = "";
     // Construction du mot entré par l'utilisateur
     for (let i = 0; i < maxTile; i++) {
@@ -143,15 +214,43 @@ function getWord() {
         });
     } else {
         wordValidated = true;
-        colorLetter(word);
+        updateKeyboardColors(word);
+        colorLetter(word, targetWord, maxRow, maxTile);
     }
+}
+
+/**
+ * Fonction qui met les couleurs au clavier
+ * @param {String} word - Mot entré par l'utilisateur
+ */
+function updateKeyboardColors(word) {
+    // todo : comparer mot avec targetword
+    for (let x = 0; x < word.length; x++) {
+        const rows = keyB.querySelectorAll(".keyboard-row");
+        for (let i = 0; i < rows.length; i++) {
+            const keys = rows[i].querySelectorAll(".keyboard-key");
+            for (let j = 0; j < keys.length; j++) {
+                if (keys[j].textContent === word[x]) {
+                    console.log("the letter is present");
+                    keys[j].classList.add("correct");
+                    console.log(keys[j]);
+                }
+            }
+        }
+    }
+    /*rows.forEach((r) => {
+        console.log(r);
+    });*/
 }
 
 /**
  * Fonction qui va colorier la lettre en fonction de sa position dans le mot
  * @param {String} word - Mot entrée par l'utilisateur
+ * @param {String} targetWord - Mot cible
+ * @param {number} maxRow - Nombre de colonnes
+ * @param {number} maxTile - Nombre de colonnes
  */
-function colorLetter(word) {
+function colorLetter(word, targetWord, maxRow, maxTile) {
     const correctLetters = [];
     const misplacedLetters = [];
 
@@ -162,7 +261,6 @@ function colorLetter(word) {
 
         tile.classList.remove("absent", "correct", "present");
 
-        // Vérification si la lettre est correctement placée
         if (letter === targetWord[i]) {
             tile.classList.add("correct");
             correctLetters.push(letter); // Ajout de la lettre aux lettres correctement placées
@@ -176,21 +274,24 @@ function colorLetter(word) {
             console.log(`La lettre ${letter} n'est pas dans le mot cible !`);
         }
     }
-    checkWin(word); // Aprés avoir colorié le mot, on vérifie si on a gagné
+    checkWin(word, targetWord, maxRow, maxTile); // Aprés avoir colorié le mot, on vérifie si on a gagné
 }
 
 /**
  * Fonction qui affiche les modales
  * @param {String} word - Le mot entré par l'utilisateur
+ * @param {String} targetWord
+ * @param {number} maxRow - Nombre de tentatives
+ * @param {number} maxTile - Nombre de colonnes
  */
-function checkWin(word) {
+function checkWin(word, targetWord, maxRow, maxTile) {
     if (word === targetWord) {
         document.getElementById("win").style.visibility = "visible";
-        endGame();
+        endGame(maxRow, maxTile, targetWord);
     } else if (currentRowIndex === maxRow - 1) {
         document.getElementById("target").textContent = targetWord;
         document.getElementById("lose").style.visibility = "visible";
-        endGame();
+        endGame(maxRow, maxTile, targetWord);
     }
 }
 
@@ -207,19 +308,22 @@ function handleBackdropClick(event) {
 
 /**
  * Fonction pour gérer le jeu lorsque le mot cible est deviné.
+ * @param {String} targetWord
+ * @param {number} maxRow - Nombre de lignes
+ * @param {number} maxTile - Nombre de tentatives
  */
-function endGame() {
+function endGame(maxRow, maxTile, targetWord) {
     gameEnded = true;
-    document.removeEventListener("keyup", keyUpHandler); // desactiver les touches clavier
+    document.removeEventListener("keyup", kybEvent); // desactiver les touches clavier
 }
 
-// Gestinonaire de l'evenement du button Go
+// Gestinonaire de l'evenement du button Go et Random
 document.getElementById("config").addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    targetWord = String(formData.get("mot")).toUpperCase();
+    let targetWord = String(formData.get("mot")).toUpperCase();
     console.log(targetWord);
-    maxRow = Number(formData.get("tentatives"));
+    let maxRow = Number(formData.get("tentatives"));
     console.log(maxRow);
 
     if (!dict) {
@@ -245,12 +349,15 @@ document.getElementById("config").addEventListener("submit", (e) => {
     if (!(e.target instanceof HTMLFormElement)) {
         throw Error("Unexpected");
     } else {
-        initGame();
+        initGame(targetWord, maxRow);
+        document.getElementById("keyboard").style.visibility = "visible";
         document.querySelector(".add").classList.add("add-right");
     }
+    const maxTile = targetWord.length;
+    // Ajout d'un gestionnaire d’événement
+    addKeyboardEventListeners(maxRow, maxTile, targetWord);
+    document.querySelector("#win").addEventListener("click", handleBackdropClick);
+    document.querySelector("#lose").addEventListener("click", handleBackdropClick);
+    kybEvent = keyUpHandler(maxRow, maxTile, targetWord);
+    document.addEventListener("keyup", kybEvent);
 });
-
-// Ajout d'un gestionnaire d’événement
-document.querySelector("#win").addEventListener("click", handleBackdropClick);
-document.querySelector("#lose").addEventListener("click", handleBackdropClick);
-document.addEventListener("keyup", keyUpHandler);

@@ -5,8 +5,9 @@ main {
     display: grid;
     grid-template-areas: 
         "add title addRight"
-        "add content addRight";
-    grid-template-rows: 100px auto;
+        "add content addRight"
+        "add keyboard addRight";
+    grid-template-rows: 100px auto 200px;
     grid-template-columns: 330px auto 330px;
 }
 body {
@@ -230,4 +231,39 @@ h1 {
     border: none;
     background-color: transparent;
     width:270px;
+}
+
+#keyboard {
+    grid-area: keyboard;
+    visibility:hidden;
+}
+
+.virtual-keyboard {
+    display: flex;
+    flex-direction: column;
+}
+
+.keyboard-row {
+    display: auto;
+    margin: auto;
+}
+
+.keyboard-key {
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    flex: 1;
+    padding: 20px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    background-color: rgba(170, 158, 158, 0.3);
+    cursor: pointer;
+}
+
+.keyboard-key.correct {
+    background-color: #44BBA4;
+}
+
+.keyboard-key.present {
+    background-color: #E7BB41;
 }

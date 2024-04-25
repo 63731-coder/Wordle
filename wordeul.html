@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordeul</title>
     <link rel="stylesheet" href="style/wordeul.css">
-    <script src="dict.js"></script>
+    <script src="js/dict.js"></script>
     <script src="js/wordeul.js" defer></script>
 </head>
 <body>
@@ -48,38 +48,40 @@
     </section>
     
     <section id="game"></section>
-        <div class="modal win" id="win">
-            <div class="modal-dialog">
-                <span class="close-button" onclick="handleBackdropClick(event)">&times;</span> 
-                <header class="modal-header">
-                    <h1>Congratulations !</h1>
-                </header>
-                <div class="modal-body">
-                    <p>You won.</p>
-                </div>
-                <footer class="modal-footer">
-                    <button class="close" onclick="handleBackdropClick(event)">Close</button>
-                </footer>
-            </div>
-        </div>
 
-        <div class="modal lose" id="lose">
-            <div class="modal-dialog lose">
-                <span class="close-button" onclick="handleBackdropClick(event)">&times;</span> 
-                <header class="modal-header lose">
-                    <h1>Loser !</h1>
-                </header>
-                <div class="modal-body">
-                    <p>The target word was: <span id="target"></p>
-                    <p>Better luck next time !</p>
-                </div>
-                <footer class="modal-footer">
-                    <button class="close" onclick="handleBackdropClick(event)">Close</button>
-                </footer>
-            </div>
-        </div>
-    </section>
+    <section id="keyboard"></section>
 
+    <div class="modal win" id="win">
+        <div class="modal-dialog">
+            <span class="close-button" onclick="handleBackdropClick(event)">&times;</span> 
+            <header class="modal-header">
+                <h1>Congratulations !</h1>
+            </header>
+            <div class="modal-body">
+                <p>You won.</p>
+            </div>
+            <footer class="modal-footer">
+                <button class="close" onclick="handleBackdropClick(event)">Close</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal lose" id="lose">
+        <div class="modal-dialog lose">
+            <span class="close-button" onclick="handleBackdropClick(event)">&times;</span> 
+            <header class="modal-header lose">
+                <h1>Loser !</h1>
+            </header>
+            <div class="modal-body">
+                <p>The target word was: <span id="target"></p>
+                <p>Better luck next time !</p>
+            </div>
+            <footer class="modal-footer">
+                <button class="close" onclick="handleBackdropClick(event)">Close</button>
+            </footer>
+        </div>
+    </div>
+    
     </main>
 </body>
 </html>
