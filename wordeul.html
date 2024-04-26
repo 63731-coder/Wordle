@@ -1,59 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordeul</title>
     <link rel="stylesheet" href="style/wordeul.css">
-    <script src="js/dict.js"></script>
     <script src="js/wordeul.js" defer></script>
 </head>
+
 <body>
-    <main>
-
-    <aside class="add">
-        <a href="https://www.nokia.com/">
-        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGw2MnB2cTlxenZhMmltMWk2aWQ4ZWI5amN4eGlqZHh6Yng3czA4YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5z2feaQeGWgWsabcqP/giphy.gif" 
-            alt="Advertisement Nokia" title="Le dernier modèle de Nokia"></a>
-    </aside>
-
     <h1>Wordeul</h1>
+    <h3>But du jeu</h3>
+    <p>Déterminez un mot de cinq lettres.</p>
+    <p>Le joueur donne un mot et confirme avec Enter. Si le mot se trouve au dictionnaire, l'ordinateur
+        accepte le mot et indique quelles lettres sont correctes :
+    </p>
+    <ul>
+        <li>celles correctement placées sont ev vert ;</li>
+        <li>celles présentes mais mal placées sont en jaune ;</li>
+        <li>les autres sont absentes.</li>
+    </ul>
 
-    <section id="rules">
-        
-        <h3>But du jeu</h3>
-        <p>Deviner un mot.</p>
-        <p>Le joueur donne un mot et confirme avec Enter. Si le mot se trouve au dictionnaire, l'ordinateur
-            accepte le mot et indique quelles lettres sont correctes :
-        </p>
-        <ul>
-            <li>celles correctement placées sont en vert ;</li>
-            <li>celles présentes mais mal placées sont en jaune ;</li>
-            <li>les autres sont absentes.</li>
-        </ul>
-
-        <h3>Configuration du jeu</h3>
-        <form id="config">
-            <div class="mot-container">
-                <label for="mot">Mot à deviner:</label><br>
-                <input type="password" id="mot" name="mot"> <!-- Assurez-vous que l'attribut name est correct -->
-            </div><br>
-            <div class="tentatives-container">
-                <label for="tentatives">Nombre de tentatives:</label><br>
-                <input type="number" id="tentatives" name="tentatives"> <!-- Assurez-vous que l'attribut name est correct -->
-            </div><br>
-            <button type="submit" id="goBtn">Go</button>
-            <button type="submit" id="randomWordBtn">Random</button>
-        </form>
+    <section id="game">
+        <div class="row">
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+        </div>
+        <div class="row">
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+        </div>
+        <div class="row">
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+        </div>
+        <div class="row">
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+        </div>
+        <div class="row">
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+            <div class="tile">X</div>
+        </div>
     </section>
-    
-    <section id="game"></section>
-
-    <section id="keyboard"></section>
 
     <div class="modal win" id="win">
         <div class="modal-dialog">
-            <span class="close-button" onclick="handleBackdropClick(event)">&times;</span> 
+            <span class="close-button" onclick="handleBackdropClick(event)">&times;</span>
             <header class="modal-header">
                 <h1>Congratulations !</h1>
             </header>
@@ -68,12 +77,12 @@
 
     <div class="modal lose" id="lose">
         <div class="modal-dialog lose">
-            <span class="close-button" onclick="handleBackdropClick(event)">&times;</span> 
+            <span class="close-button" onclick="handleBackdropClick(event)">&times;</span>
             <header class="modal-header lose">
-                <h1>Loser !</h1>
+                <h1>Looser !</h1>
             </header>
             <div class="modal-body">
-                <p>The target word was: <span id="target"></p>
+                <p>The target word was: <span id="target"></span></p>
                 <p>Better luck next time !</p>
             </div>
             <footer class="modal-footer">
@@ -81,7 +90,5 @@
             </footer>
         </div>
     </div>
-    
-    </main>
 </body>
 </html>
