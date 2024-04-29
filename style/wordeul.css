@@ -1,20 +1,63 @@
 :root {
     --font: Arial, Helvetica, sans-serif;
 }
-
+main {
+    display: grid;
+    grid-template-areas: 
+        "add title addRight"
+        "add content addRight"
+        "add keyboard addRight";
+    grid-template-rows: 100px auto 220px;
+    grid-template-columns: 330px auto 330px;
+}
 body {
     color: white;
     background-color: #393E41;
-    margin: 70px;
     font-family: var(--font);
-    font-size: 1.1em;
+    font-size: 1em;
+    background-image: url(https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZudzJzdm9veG9idGs5dTIwODh1MXgza3gxeGdhd2M5OHh3emM3diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VwXcgwGIPyiiY/giphy.gif);
+    
+}
+
+@keyframes horizontal-shaking {
+    0% { transform: translateX(0) }
+    25% { transform: translateX(5px) }
+    50% { transform: translateX(-5px) }
+    75% { transform: translateX(5px) }
+    100% { transform: translateX(0) }
+}
+    
+.shake {
+    animation-name: horizontal-shaking;
+    animation-duration: 0.5s;
+}
+
+section#rules {
+    grid-area: content;
+}
+
+aside {
+    grid-area: add;
+    margin-top: 50px;
+}
+
+img {
+    width: 300px;
+}
+
+.add-right {
+    grid-area: addRight;
+    margin-left: 20px
 }
 
 h1 {
     text-align: center;
+    grid-area: title;
+    margin-top: 70px;
 }
 
 #game {
+    visibility: hidden;
     font-size: 1.4em;
     font-weight: bold;
     display: flex;
@@ -23,10 +66,10 @@ h1 {
     border: 2px solid #fff;
     border-radius: 10px;
     padding: 10px;
-    box-sizing: border-box;
-    max-width: 300px;
-    max-height: 327px;
+    box-sizing:content-box;
     margin: auto;
+    margin-top: 20px;
+    grid-area: content;
 }
 
 .row {
@@ -36,13 +79,13 @@ h1 {
 .tile {
     width: 52px;
     height: 52px;
-    margin: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
+    margin-right: 3px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10%;
-    background-color: #A19B91;
+    background-color: rgba(170, 158, 158, 0.3);
     border: 1px thin;
     font-family: Arial, sans-serif;
 }
@@ -57,18 +100,15 @@ h1 {
 }
 
 .absent {
-    color: white;
-}
-
-.hidden {
-    visibility: hidden;
+    color:white;
+    background-color: #A19B91;
 }
 
 /* Styles pour le fond grisé semi-transparent */
 .modal.win {
     visibility: hidden;
-    position: fixed;
-    top: 0;
+    position: fixed; 
+    top: 0; 
     left: 0;
     width: 100%;
     height: 100%;
@@ -90,17 +130,17 @@ h1 {
 .modal-dialog {
     font-family: var(--font);
     position: fixed;
-    top: 1.75rem;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    width: 500px;
-    max-width: 100%;
-    min-height: 150px;
+    top: 1.75rem; 
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    width:500px; 
+    max-width: 100%; 
+    min-height:150px; 
     background-color: #44BBA4;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 20px; 
+    border-radius: 8px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -109,9 +149,9 @@ h1 {
 }
 
 /* Style pour l'en-tête et le pied de page de la modale */
-.modal-header,
+.modal-header, 
 .modal-footer {
-    padding: 10px;
+    padding: 10px; 
     border-bottom: 1px solid #ccc;
     text-align: center;
 }
@@ -121,14 +161,115 @@ h1 {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 2em;
+    font-size: 2em; 
     cursor: pointer;
 }
 
 /* Style pour le bouton de fermeture */
 .close {
-    color: white;
+    color:white;
     background-color: grey;
     border-radius: 8px;
     font-size: 1.1em;
+}
+
+#goBtn {
+    color:white;
+    background-color: #23b5d3;
+    border-radius: 8px;
+    font-size:1.3em;
+}
+
+#randomWordBtn {
+    color:white;
+    background-color: #2a9d8f;
+    border-radius: 8px;
+    font-size:1.3em;
+}
+
+.mot-container {
+    background-color: white;
+    width:300px;
+    border-radius: 5px;
+}
+  
+.mot-container label {
+    position: absolute;
+    color: grey;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+  
+.mot-container input {
+    padding-top: 20px;
+    margin-bottom: 10px;
+    margin-left:10px;
+    border: none;
+    background-color: transparent;
+    width: 270px;
+}
+
+.tentatives-container {
+    background-color: white;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.tentatives-container label {
+    position:absolute;
+    color:grey;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-top:10px;
+}
+
+.tentatives-container input {
+    padding-top: 20px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border: none;
+    background-color: transparent;
+    width:270px;
+}
+
+#keyboard {
+    display:flex;
+    grid-area: keyboard;
+    visibility:hidden;
+}
+
+.virtual-keyboard {
+    display: flex;
+    flex-direction: column;
+}
+
+.keyboard-row {
+    display: flex;
+    margin: auto;
+}
+
+.keyboard-key {
+    color: white;
+    font-weight: bold;
+    font-size: 1em;
+    flex: 1;
+    padding: 20px;
+    margin: 2px;
+    border: 1px solid #ccc;
+    background-color: rgba(170, 158, 158, 0.3);
+    cursor: pointer;
+    border-radius: 10%;
+}
+
+.keyboard-key.correct {
+    background-color: #44BBA4;
+}
+
+.keyboard-key.present {
+    background-color: #E7BB41;
+}
+
+.keyboard-key.absent {
+    background-color: #A19B91;
 }
