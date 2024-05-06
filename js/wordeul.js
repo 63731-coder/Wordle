@@ -331,19 +331,13 @@ function endGame(maxRow, maxTile, targetWord) {
     document.removeEventListener("keyup", kybEvent); // desactiver les touches clavier
 }
 
-// Gestinonaire formulaire (et buttons)
-document.getElementById("config").addEventListener("submit", (e) => {
-    e.preventDefault();
-    // @ts-ignore
-    const formData = new FormData(e.target);
-    let targetWord = String(formData.get("mot")).toUpperCase();
-    const maxRow = Number(formData.get("tentatives"));
-    let maxTile = targetWord.length;
-
-    if (!dict) {
-        throw Error("Dictionnaire non chargé.");
-    }
-
+/**
+ * Function qui gere le button Go
+ * @param {string} targetWord - Mot secret
+ * @param {number} maxRow - Nombre de tentatives
+ * @param {number} maxTile - Nombre de colonnes
+ */
+function goBtn(targetWord, maxRow, maxTile) {
     if (!dict.includes(targetWord)) { // verifier si le mot est dans le dictionnaire
         console.log(`targetWord non trouvé dans le dictionnaire: ${targetWord}`);
         // @ts-ignore
@@ -352,36 +346,82 @@ document.getElementById("config").addEventListener("submit", (e) => {
         document.querySelector(".mot-container").addEventListener("animationend", () => {
             document.querySelector(".mot-container").classList.remove("shake");
         });
-        return;
-    }
-
-    if (targetWord === "" && maxRow > 0) { // si on a appuié sur le button Random
-        console.log(e.target);
-        const randomIndex = Math.floor(Math.random() * dict.length);
-        targetWord = dict[randomIndex];
-        maxTile = targetWord.length;
-    }
-
-    if (!(e.target instanceof HTMLFormElement)) {
-        throw Error("Unexpected");
     } else if (maxRow === null || maxRow === 0) { // si on a oublié de donner le nb de tentatives
         document.querySelector(".tentatives-container").classList.add("shake"); // animer le jeu
         document.querySelector(".tentatives-container").addEventListener("animationend", () => {
             document.querySelector(".tentatives-container").classList.remove("shake");
         });
-    } else {
-        // Gestionaires d'evenements
+        console.log("Donnez le nombre de tentatives !");
+    } else if (targetWord.length === 0) {
+        console.log("Donnez le mot secret !");
+        document.querySelector(".mot-container").classList.add("shake"); // animer le jeu
+        document.querySelector(".mot-container").addEventListener("animationend", () => {
+            document.querySelector(".mot-container").classList.remove("shake");
+        });
+    } else if (targetWord.length > 0) {
+        // Gestionaires d'evenements - initialiser le jeu
         document.querySelector("#win").addEventListener("click", handleBackdropClick);
         document.querySelector("#lose").addEventListener("click", handleBackdropClick);
         kybEvent = keyUpHandler(maxRow, maxTile, targetWord);
         document.addEventListener("keyup", kybEvent);
-        // Initialiser le jeu
         initGame(targetWord, maxRow);
-        //document.getElementById("keyboard").style.visibility = "visible";
         document.getElementById("keyboard").classList.add("visible");
         document.querySelector(".add").classList.add("add-right");
     }
-    addKeyboardEventListeners(maxRow, maxTile, targetWord);
+    addKeyboardEventListeners(maxRow, maxTile, targetWord); //activer clavier
+}
+
+/**
+ * Fonction qui gère le button Random
+ * @param {string} targetWord - Mot secret
+ * @param {number} maxRow - Nombre de tentatives
+ * @param {number} maxTile - Nombre de colonnes
+ */
+function randomWordBtn(targetWord, maxRow, maxTile) {
+    if (maxRow === null || maxRow === 0) { // si on a oublié de donner le nb de tentatives
+        document.querySelector(".tentatives-container").classList.add("shake"); // animer le jeu
+        document.querySelector(".tentatives-container").addEventListener("animationend", () => {
+            document.querySelector(".tentatives-container").classList.remove("shake");
+        });
+        console.log("Donnez le nombre de tentatives !");
+    } else {
+        const randomIndex = Math.floor(Math.random() * dict.length);
+        // eslint-disable-next-line no-param-reassign
+        targetWord = dict[randomIndex];
+        // eslint-disable-next-line no-param-reassign
+        maxTile = targetWord.length;
+        // Gestionaires d'evenements - initialiser le jeu
+        document.querySelector("#win").addEventListener("click", handleBackdropClick);
+        document.querySelector("#lose").addEventListener("click", handleBackdropClick);
+        kybEvent = keyUpHandler(maxRow, maxTile, targetWord);
+        document.addEventListener("keyup", kybEvent);
+        initGame(targetWord, maxRow);
+        document.getElementById("keyboard").classList.add("visible");
+        document.querySelector(".add").classList.add("add-right");
+    }
+    addKeyboardEventListeners(maxRow, maxTile, targetWord); //activer clavier
+}
+
+// Gestinonaire formulaire
+document.getElementById("config").addEventListener("submit", (e) => {
+    e.preventDefault();
+    // @ts-ignore
+    const formData = new FormData(e.target);
+    const targetWord = String(formData.get("mot")).toUpperCase();
+    const maxRow = Number(formData.get("tentatives"));
+    const maxTile = targetWord.length;
+    const button = e.submitter.id;
+    if (!dict) {
+        throw Error("Dictionnaire non chargé.");
+    }
+    if (!(e.target instanceof HTMLFormElement)) {
+        throw Error("Unexpected");
+    }
+    if (button === "goBtn") {
+        goBtn(targetWord, maxRow, maxTile);
+    } else {
+        randomWordBtn(targetWord, maxRow, maxTile);
+    }
 });
 
 document.getElementById("keyboard").classList.add("invisible");
