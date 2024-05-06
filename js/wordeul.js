@@ -384,7 +384,7 @@ function randomWordBtn(targetWord, maxRow, maxTile) {
             document.querySelector(".tentatives-container").classList.remove("shake");
         });
         console.log("Donnez le nombre de tentatives !");
-    } else {
+    } else if (targetWord.length === 0) {
         const randomIndex = Math.floor(Math.random() * dict.length);
         // eslint-disable-next-line no-param-reassign
         targetWord = dict[randomIndex];
