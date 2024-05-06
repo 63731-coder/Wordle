@@ -1,5 +1,15 @@
 :root {
     --font: Arial, Helvetica, sans-serif;
+    --colorWhite: white;
+    --colorGreen: #44BBA4;
+    --colorYellow: #E7BB41;
+    --colorAbsent: #A19B91;
+    --colorRed: #EA526F;
+    --colorGrey: grey;
+    --color:lightgrey; 
+    --defaultBodyColor: #393E41;
+    --light: #ccc;
+    --goBtn: #23b5d3;
 }
 main {
     display: grid;
@@ -11,8 +21,8 @@ main {
     grid-template-columns: 330px auto 330px;
 }
 body {
-    color: white;
-    background-color: #393E41;
+    color: var(--colorWhite);
+    background-color: var(--defaultBodyColor);
     font-family: var(--font);
     font-size: 1em;
     background-image: url(https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZudzJzdm9veG9idGs5dTIwODh1MXgza3gxeGdhd2M5OHh3emM3diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/VwXcgwGIPyiiY/giphy.gif);
@@ -63,13 +73,21 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid #fff;
+    border: 2px solid var(--colorWhite);
     border-radius: 10px;
     padding: 10px;
     box-sizing:content-box;
     margin: auto;
     margin-top: 20px;
     grid-area: content;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.invisible {
+    visibility: none;
 }
 
 .row {
@@ -92,16 +110,16 @@ h1 {
 
 /* Ajouter la couleur appropriée en fonction du résultat de la comparaison */
 .correct {
-    background-color: #44BBA4;
+    background-color: var(--colorGreen);
 }
 
 .present {
-    background-color: #E7BB41;
+    background-color: var(--colorYellow);
 }
 
 .absent {
-    color:white;
-    background-color: #A19B91;
+    color:var(--colorWhite);
+    background-color: var(--colorAbsent);
 }
 
 /* Styles pour le fond grisé semi-transparent */
@@ -138,21 +156,21 @@ h1 {
     width:500px; 
     max-width: 100%; 
     min-height:150px; 
-    background-color: #44BBA4;
+    background-color: var(--colorGreen);
     padding: 20px; 
     border-radius: 8px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .modal-dialog.lose {
-    background-color: #EA526F;
+    background-color: var(--colorRed);
 }
 
 /* Style pour l'en-tête et le pied de page de la modale */
 .modal-header, 
 .modal-footer {
     padding: 10px; 
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--light);
     text-align: center;
 }
 
@@ -167,35 +185,35 @@ h1 {
 
 /* Style pour le bouton de fermeture */
 .close {
-    color:white;
-    background-color: grey;
+    color:var(--colorWhite);
+    background-color: var(--colorGrey);
     border-radius: 8px;
     font-size: 1.1em;
 }
 
 #goBtn {
-    color:white;
-    background-color: #23b5d3;
+    color:var(--colorWhite);
+    background-color: var(--goBtn);
     border-radius: 8px;
     font-size:1.3em;
 }
 
 #randomWordBtn {
-    color:white;
-    background-color: #2a9d8f;
+    color:var(--colorWhite);
+    background-color: var(--colorGreen);
     border-radius: 8px;
     font-size:1.3em;
 }
 
 .mot-container {
-    background-color: white;
+    background-color: var(--colorWhite);
     width:300px;
     border-radius: 5px;
 }
   
 .mot-container label {
     position: absolute;
-    color: grey;
+    color: var(--colorGrey);
     font-size: 14px;
     margin-left: 10px;
     margin-top: 10px;
@@ -211,14 +229,14 @@ h1 {
 }
 
 .tentatives-container {
-    background-color: white;
+    background-color: var(--colorWhite);
     width: 300px;
     border-radius: 5px;
 }
 
 .tentatives-container label {
     position:absolute;
-    color:grey;
+    color: var(--colorGrey);
     font-size: 14px;
     margin-left: 10px;
     margin-top:10px;
@@ -236,7 +254,7 @@ h1 {
 #keyboard {
     display:flex;
     grid-area: keyboard;
-    visibility:hidden;
+    /*visibility:hidden;*/
 }
 
 .virtual-keyboard {
@@ -250,26 +268,26 @@ h1 {
 }
 
 .keyboard-key {
-    color: white;
+    color: var(--colorWhite);
     font-weight: bold;
     font-size: 1em;
     flex: 1;
     padding: 20px;
     margin: 2px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--light);
     background-color: rgba(170, 158, 158, 0.3);
     cursor: pointer;
     border-radius: 10%;
 }
 
 .keyboard-key.correct {
-    background-color: #44BBA4;
+    background-color: var(--colorGreen);
 }
 
 .keyboard-key.present {
-    background-color: #E7BB41;
+    background-color: var(--colorYellow);
 }
 
 .keyboard-key.absent {
-    background-color: #A19B91;
+    background-color: var(--colorAbsent);
 }

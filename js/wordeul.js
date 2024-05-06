@@ -331,13 +331,14 @@ function endGame(maxRow, maxTile, targetWord) {
     document.removeEventListener("keyup", kybEvent); // desactiver les touches clavier
 }
 
-// Gestinonaire de l'evenement du button Go et Random
+// Gestinonaire formulaire (et buttons)
 document.getElementById("config").addEventListener("submit", (e) => {
     e.preventDefault();
     // @ts-ignore
     const formData = new FormData(e.target);
     let targetWord = String(formData.get("mot")).toUpperCase();
     const maxRow = Number(formData.get("tentatives"));
+    let maxTile = targetWord.length;
 
     if (!dict) {
         throw Error("Dictionnaire non chargé.");
@@ -354,9 +355,11 @@ document.getElementById("config").addEventListener("submit", (e) => {
         return;
     }
 
-    if (targetWord === "") { // si on a appuié sur le button Random
+    if (targetWord === "" && maxRow > 0) { // si on a appuié sur le button Random
+        console.log(e.target);
         const randomIndex = Math.floor(Math.random() * dict.length);
         targetWord = dict[randomIndex];
+        maxTile = targetWord.length;
     }
 
     if (!(e.target instanceof HTMLFormElement)) {
@@ -367,15 +370,18 @@ document.getElementById("config").addEventListener("submit", (e) => {
             document.querySelector(".tentatives-container").classList.remove("shake");
         });
     } else {
+        // Gestionaires d'evenements
+        document.querySelector("#win").addEventListener("click", handleBackdropClick);
+        document.querySelector("#lose").addEventListener("click", handleBackdropClick);
+        kybEvent = keyUpHandler(maxRow, maxTile, targetWord);
+        document.addEventListener("keyup", kybEvent);
+        // Initialiser le jeu
         initGame(targetWord, maxRow);
-        document.getElementById("keyboard").style.visibility = "visible";
+        //document.getElementById("keyboard").style.visibility = "visible";
+        document.getElementById("keyboard").classList.add("visible");
         document.querySelector(".add").classList.add("add-right");
     }
-    const maxTile = targetWord.length;
-    // Gestionaires d'evenements
     addKeyboardEventListeners(maxRow, maxTile, targetWord);
-    document.querySelector("#win").addEventListener("click", handleBackdropClick);
-    document.querySelector("#lose").addEventListener("click", handleBackdropClick);
-    kybEvent = keyUpHandler(maxRow, maxTile, targetWord);
-    document.addEventListener("keyup", kybEvent);
 });
+
+document.getElementById("keyboard").classList.add("invisible");
