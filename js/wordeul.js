@@ -112,10 +112,10 @@ function isAlphabet(key) {
 }
 
 /**
- * Fonction pour remplacer la lettre X par la lettre spécifiée à position spécifiée.
- * @param {number} rowNumber - Le numéro de la ligne.
- * @param {number} tileNumber - Le numéro de la colonne de la ligne.
- * @param {string} letter - La lettre à placer.
+ * Fonction pour placer une lettre
+ * @param {number} rowNumber - Le numéro de la ligne
+ * @param {number} tileNumber - Le numéro de la colonne de la ligne
+ * @param {string} letter - La lettre à placer
  */
 function setLetter(rowNumber, tileNumber, letter) {
     const row = gameEl.children[rowNumber];
@@ -124,9 +124,9 @@ function setLetter(rowNumber, tileNumber, letter) {
 }
 
 /**
- * Fonction pour effacer les lettres.
- * @param {number} rowNumber - Le numéro de la ligne.
- * @param {number} tileNumber - Le numéro de la colonne de la ligne.
+ * Fonction pour effacer une lettre
+ * @param {number} rowNumber - Le numéro de la ligne
+ * @param {number} tileNumber - Le numéro de la colonne de la ligne
  */
 function removeLetter(rowNumber, tileNumber) {
     const row = gameEl.children[rowNumber];
@@ -177,7 +177,7 @@ function handleLetterKey(key, maxRow, maxTile) {
  * @param {number} maxTile - Nombre de colonnes
  */
 function handleBackspaceKey(maxTile) {
-    if (wordValidated) { // Vérifier si on a appuié sur enter et le mot été valide
+    if (wordValidated) { // Vérifier si on a appuié sur enter et le mota a été validé
         return;
     }
     wordValidated = false;
@@ -193,8 +193,8 @@ function handleBackspaceKey(maxTile) {
 
 /**
  * Fonction qui recupère le mot entrée sur une ligne
- * @param {string} targetWord - Nombre de tentatives
- * @param {number} maxRow - Nombre de lignes
+ * @param {string} targetWord - Mot secret
+ * @param {number} maxRow - Nombre de tentatives
  * @param {number} maxTile - Nombre de colonnes
  */
 function getWord(targetWord, maxTile, maxRow) {
@@ -230,7 +230,7 @@ function getWord(targetWord, maxTile, maxRow) {
 
 /**
  * Fonction qui colorie les lettres qui sont bien placées.
- * @param {string} word - Mot entrée par l'utilisateur
+ * @param {string} word - Mot entré par l'utilisateur
  * @param {object} places - Dictionnaire qui contient les lettres du targetWord
  * @param {string} targetWord - Mot secret
  */
@@ -257,7 +257,7 @@ function colorWellPlaced(places, word, targetWord) {
 
 /**
  * Fonction qui va colorier la lettre en fonction de sa position dans le mot
- * @param {string} word - Mot entrée par l'utilisateur
+ * @param {string} word - Mot entré par l'utilisateur
  * @param {object} places - Dictionnaire qui contient les lettres du targetWord
  * @param {number} maxTile - Le nombre de colonnes
  * @param {string} targetWord - Mot secret
@@ -368,7 +368,7 @@ function goBtn(targetWord, maxRow, maxTile) {
         document.getElementById("keyboard").classList.add("visible");
         document.querySelector(".add").classList.add("add-right");
     }
-    addKeyboardEventListeners(maxRow, maxTile, targetWord); //activer clavier
+    addKeyboardEventListeners(maxRow, maxTile, targetWord); // activer clavier
 }
 
 /**
@@ -399,7 +399,7 @@ function randomWordBtn(targetWord, maxRow, maxTile) {
         document.getElementById("keyboard").classList.add("visible");
         document.querySelector(".add").classList.add("add-right");
     }
-    addKeyboardEventListeners(maxRow, maxTile, targetWord); //activer clavier
+    addKeyboardEventListeners(maxRow, maxTile, targetWord); // activer clavier
 }
 
 // Gestinonaire formulaire
