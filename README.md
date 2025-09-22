@@ -66,11 +66,11 @@ git clone <REPO_URL>
 
 ---
 
-## 📅 Changelog
+## Changelog
 
 * **Last update**: improved buttons and adapted CSS variables for easier styling
 * Previous versions included ESLint initial setup and project configuration
 
 
 
-🎮 *Have fun guessing the word and improving your language skills!* 🎉
+*Have fun guessing the word and improving your language skills!* 
